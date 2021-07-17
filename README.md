@@ -32,10 +32,10 @@ Coming soon
 7/17/21
 - check out next.js hosting tutorial
 - deploy the boilerplate on vercel
+- sketch out some ideas on how this will look
 
 Backlog
 - check out next.js tips and tricks
-- sketch out some ideas on how this will look
 - sketch out some ideas on how the contract will work
 - create basic account connect setup
 - map out project development (start with rsh + mjs files, move to frontend, then add styling)
