@@ -25,14 +25,20 @@ Coming soon
 - create readme after implementing boilerplate
 - check out next.js tutorial
 - watch video on mancala rules
+- ask mentor about mancala ruleset for this project
+- look into component libraries (UIKit looks like it'll work)
+- consult past projects and recount missteps
+
+7/17/21
+- check out next.js hosting tutorial
+- deploy the boilerplate on vercel
 
 Backlog
-- ask mentor about mancala ruleset for this project
-- consult past projects and recount missteps
-- check out next.js hosting tutorial
 - check out next.js tips and tricks
 - sketch out some ideas on how this will look
 - sketch out some ideas on how the contract will work
+- create basic account connect setup
+- map out project development (start with rsh + mjs files, move to frontend, then add styling)
 
 </p>
 </details>
