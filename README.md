@@ -33,12 +33,14 @@ Coming soon
 - check out next.js hosting tutorial
 - deploy the boilerplate on vercel
 - sketch out some ideas on how this will look
+
+7/19/21
+- create state management system
 - create basic account connect setup
 
 Backlog
 - check out next.js tips and tricks
 - sketch out some ideas on how the contract will work
-- create state management system
 - map out project development (start with rsh + mjs files, move to frontend, then add styling)
 
 </p>

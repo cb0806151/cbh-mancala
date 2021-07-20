@@ -2,12 +2,25 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { loadStdlib } from '@reach-sh/stdlib'
+import { stateQuery, set } from '../lib/state'
 const reach = loadStdlib('CFX');
 
 export default function Home() {
+  let account = stateQuery.select('account')
 
   const connectWallet = async () => {
-    await reach.getDefaultAccount()
+    await getAccount()
+    account.subscribe(x => getBalance(x))
+  }
+
+  const getAccount = async () => {
+    let acc = await reach.getDefaultAccount()
+    set(acc, 'account')
+  }
+
+  const getBalance = async (account) => {
+    let rawBalance = await reach.balanceOf(account)
+    set(reach.formatCurrency(rawBalance, 4), 'balance')
   }
 
   return (
