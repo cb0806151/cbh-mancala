@@ -1,8 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # reach
-pages/reach
-pages/docker-compose.yml.devnet
+contract/reach
+contract/docker-compose.yml.devnet
 
 # dependencies
 /node_modules
