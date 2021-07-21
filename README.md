@@ -42,11 +42,15 @@ Coming soon
 - write up some ideas on how the contract will work
 - set up the boilerplate of the rsh + mjs files
 
+7/21/21
+- create pseudo-code draft of contract
+
 Backlog
 - check out next.js tips and tricks
 - sunday recap
 - update favicon
 - start work on the contract
+- figure out how to randomize starting turns
 
 </p>
 </details>
@@ -55,6 +59,7 @@ Backlog
 
 - No copy-and-pasting of contract invites: A system that allows users to pick their next game based on currently running games  
 - Alternate rules: different common rulesets that can be chosen by the user who starts the game.
+- Make bets optional
 
 </p>
 </details>
