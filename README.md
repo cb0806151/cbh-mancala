@@ -44,6 +44,7 @@ Coming soon
 
 7/21/21
 - create pseudo-code draft of contract
+- set up place bets and end
 
 Backlog
 - check out next.js tips and tricks

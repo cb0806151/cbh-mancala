@@ -3,6 +3,8 @@
 # reach
 contract/reach
 contract/docker-compose.yml.devnet
+contract/.dockerignore
+contract/.gitignore
 
 # dependencies
 /node_modules
