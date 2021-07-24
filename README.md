@@ -46,11 +46,18 @@ Coming soon
 - create pseudo-code draft of contract
 - set up place bets and end
 
+7/22/21
+- start work on basic piece moving logic
+
+7/23/21: busy all day 
+
+7/24/21
+- wrap up draft of piece moving logic
+
 Backlog
 - check out next.js tips and tricks
 - sunday recap
 - update favicon
-- start work on the contract
 - figure out how to randomize starting turns
 
 </p>
