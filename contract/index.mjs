@@ -17,6 +17,11 @@ import * as backend from './build/index.main.mjs';
   const DefaultActions = {
     gameEnds: async () => {
       console.log("game ended");
+    },
+    getMove: async () => {
+      let index = Math.floor(Math.random() * 11);
+      console.log(index);
+      return index;
     }
   }
 
