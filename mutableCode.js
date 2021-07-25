@@ -170,3 +170,76 @@ for (i = 0; i < 12; i++) {
 // calculate the distance from the starting point to your current point
 
 // from 4 to 1
+
+
+
+let state = {
+  currentTurnIndex: 0,
+  board: board
+};
+
+
+
+const adjustHouse = (value, index, houseIndex, piecesCount) => {
+  const actualDistance = index < houseIndex ? (12 - houseIndex) + index : index - houseIndex
+  const remainder = Math.floor(((piecesCount - actualDistance) * 100) / 12)
+  const calculation = remainder > 200 ? 3 :
+                    remainder > 100 ? 2 :
+                    remainder > 0 ? 1 : 0
+  
+  const newValue = value + calculation
+  return newValue;
+}
+
+const adjustPoints = (value, index, houseIndex, piecesCount) => {
+  const actualDistance = index < houseIndex ? (13 - houseIndex) + index : index - houseIndex
+  const remainder = Math.floor(((piecesCount - actualDistance) * 100) / 13)
+  const calculation = remainder >= 200 ? 3 :
+                    remainder >= 100 ? 2 :
+                    remainder >= 0 ? 1 : 0
+  const stuff = {
+    destination: index,
+    youAreHere: houseIndex
+  }
+//   console.table(stuff)
+  const newValue = value + calculation
+  return newValue;
+}
+
+const deductPointsFromTotalPieces = (houseIndex, piecesCount, playerIndex) => {
+  const turnaroundPoint = playerIndex === 0 ? 12 : 6;
+  const points = adjustPoints(0, turnaroundPoint, houseIndex, piecesCount);
+  const adjustedPieces = piecesCount - points
+  return adjustedPieces
+}
+
+const movePieces = (state, houseIndex) => {
+
+  const turnaround = state.currentTurnIndex === 0 ? 11 : 5;
+//   console.log(state.board[houseIndex])
+  const piecesCount = deductPointsFromTotalPieces(houseIndex, state.board[houseIndex], state.currentTurnIndex);
+//   console.log(piecesCount)
+  let uBoard = state.board
+  uBoard[houseIndex] = 0;
+  
+  const updatedBoard = uBoard;
+//   const updatedBoard = state.board.set(houseIndex, 0);
+  
+  const changedBoard = updatedBoard.map((value, index) => adjustHouse(value, index, houseIndex+1, piecesCount));
+//   const changedBoard = updatedBoard.mapWithIndex((value, index) => adjustHouse(value, index, houseIndex, 25));
+  
+  const updatedState = { 
+    currentTurnIndex: 1, 
+    board: changedBoard 
+  }
+
+  return updatedState;
+}
+
+
+
+let currentState = state
+for (i = 0; i < 6; i++) {
+  currentState = movePieces(currentState, i);
+  console.log(currentState.board)
+}

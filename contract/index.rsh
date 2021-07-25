@@ -15,8 +15,6 @@ const State = Object({
   points: Points,
 });
 
-const iniitalBoard = Array.replicate(12, 4);
-
 const initialState = (turnIndex) => ({
   currentTurnIndex: turnIndex,
   board: board,
@@ -43,7 +41,7 @@ const caclulateLaps = (index, houseIndex, piecesCount) => {
 }
 
 const deductPointsFromTotalPieces = (houseIndex, piecesCount, playerIndex) => {
-  const turnaroundPoint = playerIndex === 0 ? 12 : 6;
+  const turnaroundPoint = playerIndex == 0 ? 12 : 6;
   const points = caclulateLaps(turnaroundPoint, houseIndex, piecesCount);
   const adjustedPieces = piecesCount - points;
   return { piecesCount: adjustedPieces, points: points };
@@ -64,7 +62,6 @@ const movePieces = (state, houseIndex) => {
   return updatedState;
 }
 
-
 //////////////////////////////////////////////////////
 
 const Players = {
@@ -80,7 +77,7 @@ const Alice = {
 };
 
 const Bob = {
-  acceptBet: Fun([State], Null),
+  acceptBet: Fun([], Null),
 };
 
 export const main = Reach.App(() => {
@@ -104,42 +101,35 @@ export const main = Reach.App(() => {
   commit();
 
   B.only(() => {
-    const state = initialState(1);
-    const newState1 = movePieces(state, 0);
-    const newState2 = movePieces(newState1, 1);
-    const newState3 = movePieces(newState2, 2);
-    const newState4 = movePieces(newState3, 3);
-    const newState5 = movePieces(newState4, 4);
-    const newState6 = movePieces(newState5, 5);
-    interact.acceptBet(newState6);
+    interact.acceptBet();
   });
 
   B.pay(initialBet)
     .timeout(deadline, () => closeTo(A, endOfGame));
   
-  // const currentTurnIndex = 0;
-  // var state = initialState(currentTurnIndex);
-  // invariant( 1 === 1 );
-  // while ( winner === 0 ) {
+  const currentTurnIndex = 0;
+  var state = initialState(currentTurnIndex);
+  invariant( balance() == 2 * initialBet );
+  while ( state.points[1] < 4 ) {
     
-  //   if (playerIndex === 0) {
-  //     commit();
-  //     A.only(() => {
-  //       const houseIndex = declassify(interact.getMove());
-  //     });
-  //     A.publish(houseIndex);
-  //     state = movePieces(state, houseIndex);
-  //     continue;
-  //   } else {
-  //     commit();
-  //     B.only(() => {
-  //       const houseIndex = declassify(interact.getMove());
-  //     });
-  //     B.publish(houseIndex);
-  //     state = movePieces(state, houseIndex);
-  //     continue;
-  //   }
-  // }
+    if (state.currentTurnIndex == 0) {
+      commit();
+      A.only(() => {
+        const houseIndex = declassify(interact.getMove());
+      });
+      A.publish(houseIndex);
+      state = movePieces(state, houseIndex);
+      continue;
+    } else {
+      commit();
+      B.only(() => {
+        const houseIndex = declassify(interact.getMove());
+      });
+      B.publish(houseIndex);
+      state = movePieces(state, houseIndex);
+      continue;
+    }
+  }
 
   transfer(initialBet).to(A);
   transfer(initialBet).to(B);
