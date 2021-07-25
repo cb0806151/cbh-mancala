@@ -37,8 +37,9 @@ import * as backend from './build/index.main.mjs';
   }
 
   const BobActions = {
-    acceptBet: async () => {
-      return;
+    acceptBet: async (state) => {
+      let board = state.board
+      console.log(board)
     }
   }
 

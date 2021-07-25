@@ -7,6 +7,43 @@
 
 const playerStores = array(UInt, [0, 0]);
 const board = array(UInt, [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]);
+const Board = Array(UInt, 12);
+const State = Object({
+  currentTurnIndex: UInt,
+  board: Board,
+});
+
+const iniitalBoard = Array.replicate(12, 4);
+
+const initialState = (turnIndex) => ({
+  currentTurnIndex: turnIndex,
+  board: board
+});
+
+const adjustHouse = (value, index, houseIndex, piecesCount) => {
+  const actualDistance = index < houseIndex ? (12 - houseIndex) + index : index - houseIndex
+  const remainder = ((piecesCount - actualDistance) * 100) / 12
+  const calculation = remainder > 200 ? 3 :
+                    remainder > 100 ? 2 :
+                    remainder > 0 ? 1 : 0
+  const newValue = value + calculation
+  return newValue;
+}
+
+const movePieces = (state, houseIndex) => {
+  const piecesCount = state.board[houseIndex];
+  const updatedBoard = state.board.set(houseIndex, 0);
+  const changedBoard = updatedBoard.mapWithIndex((value, index) => adjustHouse(value, index, houseIndex+1, piecesCount));
+  const updatedState = { 
+    currentTurnIndex: 1, 
+    board: changedBoard 
+  }
+
+  return updatedState;
+}
+
+
+//////////////////////////////////////////////////////
 
 const Players = {
   gameEnds: Fun([], Null),
@@ -21,35 +58,8 @@ const Alice = {
 };
 
 const Bob = {
-  acceptBet: Fun([], Null),
+  acceptBet: Fun([State], Null),
 };
-
-const deductPointsFromPebbleCount = (houseIndex, pebbleCount, turnaround, playerIndex) => {
-  var [ distance, newPoints ] = [ houseIndex + pebbleCount, 0 ];
-  invariant(1 === 1);
-  while (distance > turnaround) {
-    distance = distance - 12;
-    newPoints++;
-    continue;
-  }
-  playerStores.set(playerIndex, playerStores[playerIndex] + newPoints);
-  return houseIndex + pebbleCount - newPoints;
-}
-
-const makeMove = (houseIndex, playerIndex) => {
-  // turnaround is the name for the point on the board at which the player drops a point in their store
-  const turnaround = playerIndex === 0 ? 11 : 5;
-  const pebbleCount = board[houseIndex] //deductPointsFromPebbleCount(houseIndex, board[houseIndex], turnaround, playerIndex);
-  
-  // empty the house that you just took all the pieces from
-  const newArray = Array.set(board, houseIndex, 0)
-
-  // go around the board adding the pieces to their respective houses
-  for (nextHouseIndex = 0; nextHouseIndex < pebbleCount; nextHouseIndex++) {
-    let currentHouseIndex = (houseIndex + 1 + nextHouseIndex) % 12
-    board.set(currentHouseIndex, board[currentHouseIndex] + 1)
-  }
-}
 
 export const main = Reach.App(() => {
   const A = Participant('Alice', {...Players, ...Alice});
@@ -72,37 +82,37 @@ export const main = Reach.App(() => {
   commit();
 
   B.only(() => {
-    interact.acceptBet();
+    const state = initialState(0);
+    const newState = movePieces(state, 4);
+    interact.acceptBet(newState);
   });
 
   B.pay(initialBet)
     .timeout(deadline, () => closeTo(A, endOfGame));
   
-
-  var [ playerIndex, winner ] = [ 0, 0 ]
-  invariant( 1 === 1 );
-  while ( winner === 0 ) {
+  // const currentTurnIndex = 0;
+  // var state = initialState(currentTurnIndex);
+  // invariant( 1 === 1 );
+  // while ( winner === 0 ) {
     
-    if (playerIndex === 0) {
-      commit();
-      A.only(() => {
-        const moveHouseIndex = declassify(interact.getMove());
-      });
-      A.publish(moveHouseIndex);
-      // makeMove(moveHouseIndex, playerIndex);
-      playerIndex = 1;
-      continue;
-    } else {
-      commit();
-      B.only(() => {
-        const moveHouseIndex = declassify(interact.getMove());
-      });
-      B.publish(moveHouseIndex);
-      // makeMove(moveHouseIndex, playerIndex);
-      [ playerIndex, winner ] = [ 0, 1 ];
-      continue;
-    }
-  }
+  //   if (playerIndex === 0) {
+  //     commit();
+  //     A.only(() => {
+  //       const houseIndex = declassify(interact.getMove());
+  //     });
+  //     A.publish(houseIndex);
+  //     state = movePieces(state, houseIndex);
+  //     continue;
+  //   } else {
+  //     commit();
+  //     B.only(() => {
+  //       const houseIndex = declassify(interact.getMove());
+  //     });
+  //     B.publish(houseIndex);
+  //     state = movePieces(state, houseIndex);
+  //     continue;
+  //   }
+  // }
 
   transfer(initialBet).to(A);
   transfer(initialBet).to(B);

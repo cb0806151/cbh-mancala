@@ -54,13 +54,14 @@ Coming soon
 7/24/21
 - wrap up draft of piece moving logic
 - attempt to implement draft of piece moving logic
+- consult the reach tic tac toe example to see how games are actually done inside reach contracts
+- start rebuilding piece moving logic
 
 Backlog
 - check out next.js tips and tricks
 - sunday recap
 - update favicon
 - figure out how to randomize starting turns
-- consult the reach tic tac toe example to see how games are actually done inside reach contracts
 
 </p>
 </details>
