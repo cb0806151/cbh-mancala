@@ -57,6 +57,9 @@ Coming soon
 - consult the reach tic tac toe example to see how games are actually done inside reach contracts
 - start rebuilding piece moving logic
 
+7/25/21
+- complete initial draft of piece moving logic
+
 Backlog
 - check out next.js tips and tricks
 - sunday recap

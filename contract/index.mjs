@@ -39,6 +39,7 @@ import * as backend from './build/index.main.mjs';
   const BobActions = {
     acceptBet: async (state) => {
       let board = state.board
+      console.log(state.points)
       console.log(board)
     }
   }
