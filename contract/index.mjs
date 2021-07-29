@@ -13,15 +13,18 @@ import * as backend from './build/index.main.mjs';
 
   const fmt = async (amt) => stdlib.formatCurrency(amt, 4);
   const getBalance = async (account) => fmt(await stdlib.balanceOf(account));
+  let moves = 0;
 
   const DefaultActions = {
     gameEnds: async () => {
       console.log("game ended");
     },
-    getMove: async () => {
-      let index = Math.floor(Math.random() * 11);
-      console.log(index);
-      return index;
+    getMove: async (state) => {
+      console.log(state);
+      let move = moves
+      moves += 1;
+      if (moves == 12) moves = 0;
+      return 1;
     }
   }
 
@@ -39,6 +42,10 @@ import * as backend from './build/index.main.mjs';
   const BobActions = {
     acceptBet: () => {
       console.log("bet accepted");
+    },
+    relayState: (state) => {
+      console.log(state);
+      console.log(state.board);
     }
   }
 

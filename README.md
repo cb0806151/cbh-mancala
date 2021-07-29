@@ -62,8 +62,9 @@ Coming soon
 
 Backlog
 - check out next.js tips and tricks
-- sunday recap
+- halfway point recap
 - update favicon
+- split apart movePieces and implement require() and assume()
 - figure out how to randomize starting turns
 
 </p>
@@ -93,6 +94,10 @@ Notes:
 - I might want to start with an automated (static) game just to get an idea of how it would work
 - In that case the first iteration would be the while loop automatically flipping back and forth as the pieces choose their turns randomly
 - The rsh and mjs file need to be done by the 30th
+- something in the updatedBoard is not allowing it to be returned to the frontend
+- something is also happening when the board is given a houseIndex of 7
+- when I don't return the updatedPoints, I can give the function 0 through 12 and it'll be fine
+
 
 
 
