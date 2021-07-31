@@ -24,11 +24,17 @@ const initialState = (turnIndex) => ({
 // This function calculates the amount of pieces added (newPiecesCount) to the targetHouseIndex 
 // when the player moves the piecesCount from houseIndex around the board.
 const getUpdatedPiecesCountForHouse = (originalPiecesCount, targetHouseIndex, houseIndex, piecesCount) => {
-  const actualDistance = targetHouseIndex < houseIndex ? (12 - houseIndex) + targetHouseIndex : targetHouseIndex - houseIndex;
-  const remainder = piecesCount < actualDistance ? 0 : (piecesCount - actualDistance) / 12;
-  if (piecesCount < actualDistance && remainder == 0) return originalPiecesCount;
-  const calculation = remainder + 1;
-  const newPiecesCount = originalPiecesCount + calculation;
+  // the actualDistance is the amount of spaces the pieces must travel through to get to the targetHouseIndex
+  const actualDistance = targetHouseIndex <= houseIndex ? (12 - houseIndex) + targetHouseIndex : targetHouseIndex - houseIndex;
+
+  // the newPieces calculates how many spaces the pieces can travel after they've gotten to the targetHouseIndex and reduces it down to the additional pieces added to the original pieces
+  const newPieces = (piecesCount >= actualDistance && ((piecesCount - actualDistance) / 12) < (UInt.max - 1)) ? ((piecesCount - actualDistance) / 12) + 1 : 0;
+  
+  // if there aren't enough pieces to cross the actualDistance then the piece count of the targetHouseIndex won't change and can be returned
+  if (piecesCount < actualDistance) return originalPiecesCount;
+
+  // the 
+  const newPiecesCount = (originalPiecesCount >= 0 && newPieces < UInt.max && originalPiecesCount <= (UInt.max - newPieces)) ? originalPiecesCount + newPieces : originalPiecesCount;
   return newPiecesCount;
 }
 
@@ -43,13 +49,11 @@ const caclulateLaps = (turnaroundPoint, houseIndex, piecesCount) => {
   // If there are enough pieces to get there, then reduce them by that amount,
   // and divide the remainder by the length of the board to see how many more  
   // laps can be made 
-  const remainder = piecesCount < actualDistance ? 0 : (piecesCount - actualDistance) / 13;
+  const laps = (piecesCount >= actualDistance && ((piecesCount - actualDistance) / 12) < (UInt.max - 1)) ? ((piecesCount - actualDistance) / 12) + 1 : 0;
   // if there aren't enough pieces to get from the houseIndex to the turnaroundPoint,
   // then there aren't enough pieces to score a point and therefore a 0 can be returned
-  if (piecesCount < actualDistance && remainder == 0) return 0;
-  // Add the original lap calculated through the prior subtraction back to the remainder 
-  // to get the total number of laps made starting from houseIndex with x amount of pieces (piecesCount)
-  const laps = remainder + 1;
+  if (piecesCount < actualDistance) return 0;
+
   return laps;
 }
 
@@ -63,14 +67,17 @@ const movePieces = (state, houseIndex) => {
   
   const updatedPiecesCount = piecesCount - points
   const preparedBoard = state.board.set(houseIndex, 0);
+  // const something = getUpdatedPiecesCountForHouse(4, 0, houseIndex, updatedPiecesCount);
   const updatedBoard = preparedBoard.mapWithIndex((value, index) => getUpdatedPiecesCountForHouse(value, index, houseIndex, updatedPiecesCount));
-  const updatedPoints = state.points.set(playersStoreIndex, state.points[playersStoreIndex] + points);
+  const verifiedPoints = (state.points[playersStoreIndex] >= 0 && state.points[playersStoreIndex] <= UInt.max - points) ? state.points[playersStoreIndex] + points : state.points[playersStoreIndex];
+  const updatedPoints = state.points.set(playersStoreIndex, verifiedPoints);
   const updatedState = { 
     currentTurnIndex: 1, 
     board: updatedBoard,
     points: updatedPoints,
   }
 
+  // return state;
   return updatedState;
 }
 
@@ -154,12 +161,12 @@ export const main = Reach.App(() => {
 
   commit();
 
-  // B.only(() => {
-  //   interact.acceptBet();
-  // });
+  B.only(() => {
+    interact.acceptBet();
+  });
 
-  // B.publish().pay(initialBet)
-  //   .timeout(deadline, () => closeTo(A, endOfGame));
+  B.publish().pay(initialBet)
+    .timeout(deadline, () => closeTo(A, endOfGame));
 
   // begin test code
 
@@ -168,48 +175,48 @@ export const main = Reach.App(() => {
 
   // it completes one iteration of the commented out while loop below 
   // and sends the updated state to the frontend for context
-  B.only(() => {
-    const initIndex = 1
-    const state = initialState(initIndex);
-    const houseIndex = validateMove(interact, state);
-  });
+  // B.only(() => {
+  //   const initIndex = 1
+  //   const state = initialState(initIndex);
+  //   const houseIndex = validateMove(interact, state);
+  // });
 
-  B.publish(
-    houseIndex, state
-    ).pay(initialBet)
-    .timeout(deadline, () => closeTo(A, endOfGame));
+  // B.publish(
+  //   houseIndex, state
+  //   ).pay(initialBet)
+  //   .timeout(deadline, () => closeTo(A, endOfGame));
 
-  const newState = executeMove(state, houseIndex);
+  // const newState = executeMove(state, houseIndex);
 
-  B.only(() => {
-    interact.relayState(newState);
-  });
+  // B.only(() => {
+  //   interact.relayState(newState);
+  // });
   // end test code
 
 
-  // const currentTurnIndex = 1;
-  // var state = initialState(currentTurnIndex);
-  // invariant( balance() == 2 * initialBet );
-  // while ( state.points[1] < 4 ) {
+  const currentTurnIndex = 1;
+  var state = initialState(currentTurnIndex);
+  invariant( balance() == 2 * initialBet );
+  while ( state.points[1] < 4 ) {
     
-  //   if (state.currentTurnIndex == 0) {
-  //     commit();
-  //     A.only(() => {
-  //       const houseIndex = validateMove(interact, state);
-  //     });
-  //     A.publish(houseIndex);
-  //     state = executeMove(state, houseIndex);
-  //     continue;
-  //   } else {
-  //     commit();
-  //     B.only(() => {
-  //       const houseIndex = validateMove(interact, state);
-  //     });
-  //     B.publish(houseIndex);
-  //     state = executeMove(state, houseIndex);
-  //     continue;
-  //   }
-  // }
+    if (state.currentTurnIndex == 0) {
+      commit();
+      A.only(() => {
+        const houseIndex = validateMove(interact, state);
+      });
+      A.publish(houseIndex);
+      state = executeMove(state, houseIndex);
+      continue;
+    } else {
+      commit();
+      B.only(() => {
+        const houseIndex = validateMove(interact, state);
+      });
+      B.publish(houseIndex);
+      state = executeMove(state, houseIndex);
+      continue;
+    }
+  }
 
   transfer(initialBet).to(A);
   transfer(initialBet).to(B);

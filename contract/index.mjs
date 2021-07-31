@@ -24,7 +24,7 @@ import * as backend from './build/index.main.mjs';
       let move = moves
       moves += 1;
       if (moves == 12) moves = 0;
-      return 1;
+      return move;
     }
   }
 
@@ -45,7 +45,6 @@ import * as backend from './build/index.main.mjs';
     },
     relayState: (state) => {
       console.log(state);
-      console.log(state.board);
     }
   }
 

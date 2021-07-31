@@ -60,11 +60,26 @@ Coming soon
 7/25/21
 - complete initial draft of piece moving logic
 
+7/26/21
+- test and modify broken piece moving logic
+
+7/27/21
+- test and modify broken piece moving logic
+
+7/28/21
+- test and modify broken piece moving logic
+- implement require() and assume() in piece moving draft
+
+7/29/21
+- test and modify broken piece moving logic
+
+7/30/21
+- fix errors with draft of piece moving logic
+
 Backlog
 - check out next.js tips and tricks
 - halfway point recap
 - update favicon
-- split apart movePieces and implement require() and assume()
 - figure out how to randomize starting turns
 - start plotting out the frontend architecture
 - switch to react
