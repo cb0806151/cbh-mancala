@@ -20,7 +20,7 @@ import * as backend from './build/index.main.mjs';
       console.log("game ended");
     },
     getMove: async (state) => {
-      console.log(state);
+      console.log(state, "hello");
       let move = moves
       moves += 1;
       if (moves == 12) moves = 0;

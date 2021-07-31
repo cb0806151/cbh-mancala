@@ -66,6 +66,8 @@ Backlog
 - update favicon
 - split apart movePieces and implement require() and assume()
 - figure out how to randomize starting turns
+- start plotting out the frontend architecture
+- switch to react
 
 </p>
 </details>

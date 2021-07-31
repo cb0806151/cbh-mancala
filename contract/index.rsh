@@ -25,11 +25,9 @@ const initialState = (turnIndex) => ({
 // when the player moves the piecesCount from houseIndex around the board.
 const getUpdatedPiecesCountForHouse = (originalPiecesCount, targetHouseIndex, houseIndex, piecesCount) => {
   const actualDistance = targetHouseIndex < houseIndex ? (12 - houseIndex) + targetHouseIndex : targetHouseIndex - houseIndex;
-  if (piecesCount < actualDistance) return originalPiecesCount;
-  const remainder = (piecesCount - actualDistance) / 12;
-  const calculation = remainder > 2 ? 3 :
-                      remainder > 1 ? 2 :
-                      remainder > 0 ? 1 : 0;
+  const remainder = piecesCount < actualDistance ? 0 : (piecesCount - actualDistance) / 12;
+  if (piecesCount < actualDistance && remainder == 0) return originalPiecesCount;
+  const calculation = remainder + 1;
   const newPiecesCount = originalPiecesCount + calculation;
   return newPiecesCount;
 }
@@ -42,13 +40,13 @@ const getUpdatedPiecesCountForHouse = (originalPiecesCount, targetHouseIndex, ho
 const caclulateLaps = (turnaroundPoint, houseIndex, piecesCount) => {
   // actualDistance gets the amount of pieces needed to get from the houseIndex to the turnaroundPoint
   const actualDistance = turnaroundPoint < houseIndex ? (13 - houseIndex) + turnaroundPoint : turnaroundPoint - houseIndex;
-  // if there aren't enough pieces to get from the houseIndex to the turnaroundPoint,
-  // then there aren't enough pieces to score a point and therefore a 0 can be returned
-  if (piecesCount < actualDistance) return 0;
   // If there are enough pieces to get there, then reduce them by that amount,
   // and divide the remainder by the length of the board to see how many more  
   // laps can be made 
-  const remainder = (piecesCount - actualDistance) / 13;
+  const remainder = piecesCount < actualDistance ? 0 : (piecesCount - actualDistance) / 13;
+  // if there aren't enough pieces to get from the houseIndex to the turnaroundPoint,
+  // then there aren't enough pieces to score a point and therefore a 0 can be returned
+  if (piecesCount < actualDistance && remainder == 0) return 0;
   // Add the original lap calculated through the prior subtraction back to the remainder 
   // to get the total number of laps made starting from houseIndex with x amount of pieces (piecesCount)
   const laps = remainder + 1;
@@ -76,6 +74,8 @@ const movePieces = (state, houseIndex) => {
   return updatedState;
 }
 
+const verifyTurnIndex = (currentTurnIndex) => (currentTurnIndex == 0 || currentTurnIndex == 1);
+
 // verifies the houseIndex given is within the boundaries of the board
 const houseIndexInsideBoard = (index) => (index >= 0 && index < 12);
 
@@ -83,24 +83,37 @@ const houseIndexInsideBoard = (index) => (index >= 0 && index < 12);
 const houseAtIndexIsNotEmpty = (index, state) => state.board[index] > 0;
 
 const validateMove = (interact, state) => {
-  const houseIndex = interact.getMove();
+  const houseIndex = interact.getMove(state);
+  assume(verifyTurnIndex(state.currentTurnIndex));
   assume(houseIndexInsideBoard(houseIndex));
   assume(houseAtIndexIsNotEmpty(houseIndex, state));
   return declassify(houseIndex);
 }
 
 const executeMove = (state, houseIndex) => {
+  require(verifyTurnIndex(state.currentTurnIndex));
   require(houseIndexInsideBoard(houseIndex));
   require(houseAtIndexIsNotEmpty(houseIndex, state));
   const newState = movePieces(state, houseIndex);
   return newState;
 }
 
+const betIsValid = (initialBet) => (initialBet >= 0 && initialBet < UInt.max && initialBet < (UInt.max - initialBet));
+
+const validateBet = (interact) => {
+  const { initialBet, deadline } = declassify(interact.getBet());
+  assume(betIsValid(initialBet));
+  return {
+    initialBet: initialBet,
+    deadline: deadline
+  };
+}
+
 //////////////////////////////////////////////////////
 
 const Players = {
   gameEnds: Fun([], Null),
-  getMove: Fun([], UInt),
+  getMove: Fun([State], UInt),
 };
 
 const Alice = {
@@ -116,7 +129,10 @@ const Bob = {
 };
 
 export const main = Reach.App(() => {
-  setOptions({ verifyArithmetic: true });
+  setOptions({ 
+    verifyArithmetic: true, 
+    verifyPerConnector: true 
+  });
   const A = Participant('Alice', {...Players, ...Alice});
   const B   = Participant('Bob', {...Players, ...Bob});
   deploy();
@@ -128,14 +144,13 @@ export const main = Reach.App(() => {
   };
   
   A.only(() => {
-    const { initialBet, deadline } = declassify(interact.getBet());
-    assume(UInt.max > 200000);
+    const { initialBet, deadline } = validateBet(interact);
   });
 
   A.publish(initialBet, deadline)
-       .pay(initialBet);
+    .pay(initialBet);
 
-  require(UInt.max > 200000);
+  require(betIsValid(initialBet));
 
   commit();
 
@@ -152,9 +167,10 @@ export const main = Reach.App(() => {
   // with the calculateLaps and getUpdatedPiecesCountForHouse functions
 
   // it completes one iteration of the commented out while loop below 
-  // and sends the updated state to the frontend for inspection
+  // and sends the updated state to the frontend for context
   B.only(() => {
-    const state = initialState(1);
+    const initIndex = 1
+    const state = initialState(initIndex);
     const houseIndex = validateMove(interact, state);
   });
 
