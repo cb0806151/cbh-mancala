@@ -76,13 +76,17 @@ Coming soon
 7/30/21
 - fix errors with draft of piece moving logic
 
+7/31/21
+- create draft of board
+- start plotting out the frontend architecture
+
 Backlog
 - check out next.js tips and tricks
 - halfway point recap
 - update favicon
 - figure out how to randomize starting turns
-- start plotting out the frontend architecture
-- switch to react
+- add in extra turn when you score a point
+- add in take-opposite-house rule
 
 </p>
 </details>
@@ -115,6 +119,10 @@ Notes:
 - something is also happening when the board is given a houseIndex of 7
 - when I don't return the updatedPoints, I can give the function 0 through 12 and it'll be fine
 
+- frontend architecture stuff
+    - create the components for the basic board
+    - create the "contract layer" through which contract data will be accessed
+    - start work on a branching modal system
 
 
 

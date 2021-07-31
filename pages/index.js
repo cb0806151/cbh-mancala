@@ -1,8 +1,10 @@
+import React from 'react';
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { loadStdlib } from '@reach-sh/stdlib'
 import { stateQuery, set } from '../lib/state'
+import Board from './../components/board';
 const reach = loadStdlib('CFX');
 
 export default function Home() {
@@ -25,6 +27,7 @@ export default function Home() {
 
   return (
     <div>
+      <Board></Board>
       <button onClick={connectWallet}>connect wallet</button>
     </div>
   )
