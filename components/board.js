@@ -1,9 +1,9 @@
-import React from 'react';
-import Store from './store';
-import House from './house';
+import React from 'react'
+import Store from './Store'
+import House from './House'
 
 export default function Board() {
-    let board = [4,4,4,4,4,4,4,4,4,4,4,4];
+    let board = [4,4,4,4,4,4,4,4,4,4,4,4]
     let points = [0, 0]
     return (<>
         <div>

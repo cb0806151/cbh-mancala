@@ -80,6 +80,8 @@ Coming soon
 - create draft of board
 - start plotting out the frontend architecture
 - start work on wallet layer
+- decide on file naming convention
+- decide on using semicolons or not
 
 Backlog
 - check out next.js tips and tricks
@@ -89,8 +91,6 @@ Backlog
 - add in extra turn when you score a point
 - add in take-opposite-house rule
 - start work on contract layer
-- decide on file naming convention
-- decide on using semicolons or not
 
 </p>
 </details>
@@ -129,7 +129,9 @@ Notes:
     - create the "contract layer" through which contract data will be accessed
     - start work on a branching modal system
 
-
+- syntax rules
+    - files names will be in PascalCase unless they need to be in a different format due to functionality convetions (i.e. how Next.js deals with page routes);
+    - no semicolons will be used in the frontend of this project
 
 
 Questions: 
