@@ -79,6 +79,7 @@ Coming soon
 7/31/21
 - create draft of board
 - start plotting out the frontend architecture
+- start work on wallet layer
 
 Backlog
 - check out next.js tips and tricks
@@ -87,6 +88,9 @@ Backlog
 - figure out how to randomize starting turns
 - add in extra turn when you score a point
 - add in take-opposite-house rule
+- start work on contract layer
+- decide on file naming convention
+- decide on using semicolons or not
 
 </p>
 </details>
@@ -96,6 +100,7 @@ Backlog
 - No copy-and-pasting of contract invites: A system that allows users to pick their next game based on currently running games  
 - Alternate rules: different common rulesets that can be chosen by the user who starts the game.
 - Make bets optional
+- Possibly change state management systems
 
 </p>
 </details>
