@@ -82,6 +82,7 @@ Coming soon
 - start work on wallet layer
 - decide on file naming convention
 - decide on using semicolons or not
+- start work on draft of branching modal system
 
 Backlog
 - check out next.js tips and tricks
@@ -91,6 +92,7 @@ Backlog
 - add in extra turn when you score a point
 - add in take-opposite-house rule
 - start work on contract layer
+- test out connecting to the Conflux network
 
 </p>
 </details>
@@ -101,6 +103,7 @@ Backlog
 - Alternate rules: different common rulesets that can be chosen by the user who starts the game.
 - Make bets optional
 - Possibly change state management systems
+- Learn some ways to optimize the contract
 
 </p>
 </details>
