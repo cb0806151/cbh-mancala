@@ -83,6 +83,7 @@ Coming soon
 - decide on file naming convention
 - decide on using semicolons or not
 - start work on draft of branching modal system
+- build out drafts of the rest of the pages for the modal
 
 Backlog
 - check out next.js tips and tricks
@@ -93,6 +94,7 @@ Backlog
 - add in take-opposite-house rule
 - start work on contract layer
 - test out connecting to the Conflux network
+- how should the folder structure of the application be organized?
 
 </p>
 </details>

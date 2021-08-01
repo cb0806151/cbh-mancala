@@ -7,7 +7,7 @@ export default function Modal({visible}) {
     useEffect(() => {
         const subscription = stateQuery.select('modalPage').subscribe(setModalPage)
         return () => subscription.unsubscribe()
-    })
+    }, [])
 
     return (<>
     {
