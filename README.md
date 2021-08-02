@@ -85,6 +85,12 @@ Coming soon
 - start work on draft of branching modal system
 - build out drafts of the rest of the pages for the modal
 
+8/1/21
+- work on "have the index.mjs file complete one actual test of the game"
+
+8/2/21
+- complete "have the index.mjs file complete one actual test of the game"
+
 Backlog
 - check out next.js tips and tricks
 - halfway point recap
@@ -92,6 +98,8 @@ Backlog
 - figure out how to randomize starting turns
 - add in extra turn when you score a point
 - add in take-opposite-house rule
+- add in win logic for emptying the board
+- add in win logic that transfers the contract balance to the winner
 - start work on contract layer
 - test out connecting to the Conflux network
 - how should the folder structure of the application be organized?

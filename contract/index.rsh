@@ -5,6 +5,8 @@
 // -Houses = 12 inlets covering the middle of the board
 // -Pieces = pebbles that sit inside the inlets and are moved across them during a players turn
 
+/////////////////////////// Game Data ///////////////////////////////////
+
 const playerStores = array(UInt, [0, 0]);
 const board = array(UInt, [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]);
 const Board = Array(UInt, 12);
@@ -20,6 +22,36 @@ const initialState = (turnIndex) => ({
   board: board,
   points: playerStores,
 });
+
+/////////////////////////////////////////////////////////////////////////
+
+//////////////////////// Win Conditions /////////////////////////////////
+
+const leftRowIsEmpty = (houses) => {
+  return houses[0] == 0 && 
+         houses[1] == 0 && 
+         houses[2] == 0 && 
+         houses[3] == 0 && 
+         houses[4] == 0 && 
+         houses[5] == 0
+}
+
+const rightRowIsEmpty = (houses) => {
+  return houses[6] == 0 && 
+         houses[7] == 0 && 
+         houses[8] == 0 && 
+         houses[9] == 0 && 
+         houses[10] == 0 && 
+         houses[11] == 0
+}
+
+const rowsAreNotEmpty = (state) => {
+  return (leftRowIsEmpty(state.board) == false && rightRowIsEmpty(state.board) == false)
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+///////////////////////////// Game Logic ////////////////////////////////
 
 // This function calculates the amount of pieces added (newPiecesCount) to the targetHouseIndex 
 // when the player moves the piecesCount from houseIndex around the board.
@@ -67,17 +99,15 @@ const movePieces = (state, houseIndex) => {
   
   const updatedPiecesCount = piecesCount - points
   const preparedBoard = state.board.set(houseIndex, 0);
-  // const something = getUpdatedPiecesCountForHouse(4, 0, houseIndex, updatedPiecesCount);
   const updatedBoard = preparedBoard.mapWithIndex((value, index) => getUpdatedPiecesCountForHouse(value, index, houseIndex, updatedPiecesCount));
   const verifiedPoints = (state.points[playersStoreIndex] >= 0 && state.points[playersStoreIndex] <= UInt.max - points) ? state.points[playersStoreIndex] + points : state.points[playersStoreIndex];
   const updatedPoints = state.points.set(playersStoreIndex, verifiedPoints);
   const updatedState = { 
-    currentTurnIndex: 1, 
+    currentTurnIndex: playersStoreIndex == 1 ? 0 : 1, 
     board: updatedBoard,
     points: updatedPoints,
   }
 
-  // return state;
   return updatedState;
 }
 
@@ -116,7 +146,9 @@ const validateBet = (interact) => {
   };
 }
 
-//////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
+
+//////////////////////// Participant Profiles ///////////////////////////
 
 const Players = {
   gameEnds: Fun([], Null),
@@ -134,6 +166,8 @@ const Bob = {
   acceptBet: Fun([], Null),
   relayState: Fun([State], Null),
 };
+
+/////////////////////////////////////////////////////////////////////////
 
 export const main = Reach.App(() => {
   setOptions({ 
@@ -168,36 +202,10 @@ export const main = Reach.App(() => {
   B.publish().pay(initialBet)
     .timeout(deadline, () => closeTo(A, endOfGame));
 
-  // begin test code
-
-  // this code was put together to test the mathematics issues I'm running into 
-  // with the calculateLaps and getUpdatedPiecesCountForHouse functions
-
-  // it completes one iteration of the commented out while loop below 
-  // and sends the updated state to the frontend for context
-  // B.only(() => {
-  //   const initIndex = 1
-  //   const state = initialState(initIndex);
-  //   const houseIndex = validateMove(interact, state);
-  // });
-
-  // B.publish(
-  //   houseIndex, state
-  //   ).pay(initialBet)
-  //   .timeout(deadline, () => closeTo(A, endOfGame));
-
-  // const newState = executeMove(state, houseIndex);
-
-  // B.only(() => {
-  //   interact.relayState(newState);
-  // });
-  // end test code
-
-
-  const currentTurnIndex = 1;
+  const currentTurnIndex = 0;
   var state = initialState(currentTurnIndex);
   invariant( balance() == 2 * initialBet );
-  while ( state.points[1] < 4 ) {
+  while ( rowsAreNotEmpty(state) ) {
     
     if (state.currentTurnIndex == 0) {
       commit();

@@ -11,20 +11,21 @@ import * as backend from './build/index.main.mjs';
   const ctcAlice = alice.deploy(backend);
   const ctcBob = bob.attach(backend, ctcAlice.getInfo());
 
-  const fmt = async (amt) => stdlib.formatCurrency(amt, 4);
+  const fmt = (amt) => stdlib.formatCurrency(amt, 4);
   const getBalance = async (account) => fmt(await stdlib.balanceOf(account));
-  let moves = 0;
+
+  const getRandomMove = (currentTurnIndex) => Math.floor(Math.random() * 6) + (currentTurnIndex == 0 ? 6 : 0)
 
   const DefaultActions = {
     gameEnds: async () => {
       console.log("game ended");
     },
     getMove: async (state) => {
-      console.log(state, "hello");
-      let move = moves
-      moves += 1;
-      if (moves == 12) moves = 0;
-      return move;
+      let move = getRandomMove(state.currentTurnIndex)
+      while (state.board[move] == 0) {
+        move = getRandomMove(state.currentTurnIndex)
+      }
+      return move
     }
   }
 
