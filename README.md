@@ -10,7 +10,17 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 <details><summary>Environment Setup Instructions</summary>
 <p>
 
-Coming soon
+- clone the repository
+- open a terminal to the `cbh-mancala` folder 
+- from there run the command `yarn install`
+- once that has completed run `cd contract`
+- (if on Windows) run the `wsl` command to switch over to linux
+- run the `curl https://docs.reach.sh/reach -o reach ; chmod +x reach` command to download reach into the contract folder
+- run the `./reach version` command to ensure it installed
+- run the `./reach compile` command to build the contract
+- run the `REACH_CONNECTOR_MODE=CFX ./reach devnet` command
+- start up a new terminal and navigate to the `cbh-mancala` folder 
+- now run the `yarn dev` command to run the application
 
 </p>
 </details>
@@ -90,6 +100,7 @@ Coming soon
 
 8/2/21
 - complete "have the index.mjs file complete one actual test of the game"
+- get caught on an issue while trying to implement contract layer
 
 Backlog
 - check out next.js tips and tricks

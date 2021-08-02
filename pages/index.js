@@ -13,11 +13,11 @@ export default function Home() {
   useEffect(() => {
     const subscription = stateQuery.select('modalVisible').subscribe(setModalVisible)
     return () => subscription.unsubscribe()
-}, [])
+  }, [])
 
   const connectWallet = async () => {
     await getAccount()
-    getBalance()
+    await getBalance()
   }
 
   return (
