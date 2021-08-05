@@ -102,6 +102,9 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 - complete "have the index.mjs file complete one actual test of the game"
 - get caught on an issue while trying to implement contract layer
 
+8/4/21
+- start work on contract layer
+
 Backlog
 - check out next.js tips and tricks
 - halfway point recap
@@ -111,7 +114,6 @@ Backlog
 - add in take-opposite-house rule
 - add in win logic for emptying the board
 - add in win logic that transfers the contract balance to the winner
-- start work on contract layer
 - test out connecting to the Conflux network
 - how should the folder structure of the application be organized?
 

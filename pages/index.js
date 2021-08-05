@@ -4,7 +4,7 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Board from '../components/Board';
 import Modal from '../components/Modal'
-import { getAccount, getBalance } from '../lib/WalletLayer';
+import { fundAccount, getAccount, getBalance } from '../lib/WalletLayer';
 import { stateQuery, set } from '../lib/State'
 
 export default function Home() {
@@ -17,6 +17,7 @@ export default function Home() {
 
   const connectWallet = async () => {
     await getAccount()
+    await fundAccount()
     await getBalance()
   }
 
