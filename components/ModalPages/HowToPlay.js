@@ -1,6 +1,6 @@
 import React from 'react';
 import StartOrJoinGame from './StartOrJoinGame'
-import { set } from '../../lib/State'
+import { set } from '../../lib/StateManagement/State'
 
 export default function HowToPlay() {
     return (<>

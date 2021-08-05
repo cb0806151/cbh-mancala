@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { deploy } from '../../lib/ContractLayer'
-import { set } from '../../lib/State'
+import { deploy } from '../../lib/Layers/Contract'
+import { set } from '../../lib/StateManagement/State'
 import Invite from './Invite'
 
 export default function StartGame() {

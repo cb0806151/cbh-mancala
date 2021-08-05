@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { stateQuery } from '../../lib/State'
+import { stateQuery } from '../../lib/StateManagement/State'
 
 export default function Invite() {
     const [inviteString, setInviteString] = useState();

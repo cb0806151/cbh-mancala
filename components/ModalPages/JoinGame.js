@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
-import { attachToContract } from '../../lib/ContractLayer'
-import { set } from '../../lib/State'
+import { attachToContract } from '../../lib/Layers/Contract'
+import { set } from '../../lib/StateManagement/State'
 
 export default function JoinGame() {
     const textArea = useRef()

@@ -4,8 +4,8 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Board from '../components/Board';
 import Modal from '../components/Modal'
-import { fundAccount, getAccount, getBalance } from '../lib/WalletLayer';
-import { stateQuery, set } from '../lib/State'
+import { fundAccount, getAccount, getBalance } from '../lib/Layers/Wallet';
+import { stateQuery, set } from '../lib/StateManagement/State'
 
 export default function Home() {
   const [modalVisible, setModalVisible] = useState()
