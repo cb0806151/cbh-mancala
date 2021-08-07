@@ -9,9 +9,14 @@ export default function Invite() {
         return () => subscription.unsubscribe()
     }, [])
 
+    const copyInviteLink = () => {
+        navigator.clipboard.writeText(inviteString);
+    };
+
     return (<>
         <p>Send this invite to someone so that they can join the game.</p>
         <textarea value={inviteString} readOnly></textarea>
+        <button onClick={copyInviteLink}>Copy Invite</button>
         <p>Once they join the game, this window will close and you can start the game.</p>
     </>)
 }
