@@ -108,17 +108,19 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 8/5/21
 - organize folder structure
 
+8/6/21
+- 11th hour dash: add commented out features while contract is being fixed
+    - have "connect wallet" button open modal
+    - figure out how to randomize starting turns
+    - add in extra turn when you score a point
+    - add in win logic that transfers the contract balance to the winner
+
 Backlog
 - check out next.js tips and tricks
 - halfway point recap
 - update favicon
-- figure out how to randomize starting turns
-- add in extra turn when you score a point
-- add in take-opposite-house rule
-- add in win logic for emptying the board
-- add in win logic that transfers the contract balance to the winner
 - test out connecting to the Conflux network
-
+- start integrating UI framework
 
 </p>
 </details>
@@ -130,6 +132,8 @@ Backlog
 - Make bets optional
 - Possibly change state management systems
 - Learn some ways to optimize the contract
+- add in win logic for emptying the board to the winner
+- Add in take-opposite-house rule
 
 </p>
 </details>
@@ -152,6 +156,8 @@ Notes:
 - something in the updatedBoard is not allowing it to be returned to the frontend
 - something is also happening when the board is given a houseIndex of 7
 - when I don't return the updatedPoints, I can give the function 0 through 12 and it'll be fine
+- start adding new stuff to the contract even if it isn't working; it be commented out for now and enabled later
+- start setting up the frontend even though it isn't functional yet
 
 - frontend architecture stuff
     - create the components for the basic board

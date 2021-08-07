@@ -19,13 +19,13 @@ export default function Home() {
     await getAccount()
     await fundAccount()
     await getBalance()
+    set(true, 'modalVisible')
   }
 
   return (
     <div>
       <Board></Board>
-      <button onClick={connectWallet}>connect wallet</button>
-      <button onClick={() => set(!modalVisible, 'modalVisible')}>Open/Close Modal</button>
+      <button onClick={connectWallet}>connect wallet</button><br/>
       <Modal visible={modalVisible}></Modal>
     </div>
   )

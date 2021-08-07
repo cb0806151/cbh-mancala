@@ -5,7 +5,7 @@
 // -Houses = 12 inlets covering the middle of the board
 // -Pieces = pebbles that sit inside the inlets and are moved across them during a players turn
 
-/////////////////////////// Game Data ///////////////////////////////////
+/////////////////////////// Game Constants ///////////////////////////////////
 
 const playerStores = array(UInt, [0, 0]);
 const board = array(UInt, [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]);
@@ -48,6 +48,12 @@ const rightRowIsEmpty = (houses) => {
 const rowsAreNotEmpty = (state) => {
   return (leftRowIsEmpty(state.board) == false && rightRowIsEmpty(state.board) == false)
 }
+
+// GAME WON LOGIC
+
+// const winnerIsAlice = (state) => state.points[0] > state.points[1];
+
+// const winnerIsBob = (state) => state.points[1] > state.points[0];
 
 /////////////////////////////////////////////////////////////////////////
 
@@ -110,6 +116,10 @@ const movePieces = (state, houseIndex) => {
 
   return updatedState;
 }
+
+/////////////////////////////////////////////////////////////////////////
+
+///////////////////////// Validation Logic ////////////////////////////
 
 const verifyTurnIndex = (currentTurnIndex) => (currentTurnIndex == 0 || currentTurnIndex == 1);
 
@@ -202,29 +212,72 @@ export const main = Reach.App(() => {
   B.publish().pay(initialBet)
     .timeout(deadline, () => closeTo(A, endOfGame));
 
-  const currentTurnIndex = 0;
-  var state = initialState(currentTurnIndex);
-  invariant( balance() == 2 * initialBet );
-  while ( rowsAreNotEmpty(state) ) {
+  // NEW CONTRACT START SEGMENT
+  
+  // A.only(() => {
+  //   const { initialBet, deadline } = validateBet(interact);
+  //   const _coinFlipA = interact.random();
+  //   const commitA = declassify(digest(_coinFlipA));
+  // });
+
+  // A.publish(initialBet, deadline, commitA)
+  //   .pay(initialBet);
+
+  // require(betIsValid(initialBet));
+
+  // commit();
+
+  // B.only(() => {
+  //   interact.acceptBet();
+  //   const coinFlipB = declassify(interact.random());
+  // });
+
+  // B.publish(coinFlipB).pay(initialBet)
+
+  // A.only(() => {
+  //   const coinFlipA = declassify(_coinFlipA);
+  // });
+  // A.publish(coinFlipA);
+
+  // require(commitA == digest(coinFlipA));
+  // const AliceIsFirst = (((coinFlipA % 2) + (coinFlipB % 2)) % 2) == 0 ? 0 : 1;
+
+  // GAME LOOP
+
+  // const currentTurnIndex = AliceIsFirst;
+  // var state = initialState(currentTurnIndex);
+  // invariant( balance() == 2 * initialBet );
+  // while ( rowsAreNotEmpty(state) ) {
     
-    if (state.currentTurnIndex == 0) {
-      commit();
-      A.only(() => {
-        const houseIndex = validateMove(interact, state);
-      });
-      A.publish(houseIndex);
-      state = executeMove(state, houseIndex);
-      continue;
-    } else {
-      commit();
-      B.only(() => {
-        const houseIndex = validateMove(interact, state);
-      });
-      B.publish(houseIndex);
-      state = executeMove(state, houseIndex);
-      continue;
-    }
-  }
+  //   if (state.currentTurnIndex == 0) {
+  //     commit();
+  //     A.only(() => {
+  //       const houseIndex = validateMove(interact, state);
+  //     });
+  //     A.publish(houseIndex);
+  //     state = executeMove(state, houseIndex);
+  //     continue;
+  //   } else {
+  //     commit();
+  //     B.only(() => {
+  //       const houseIndex = validateMove(interact, state);
+  //     });
+  //     B.publish(houseIndex);
+  //     state = executeMove(state, houseIndex);
+  //     continue;
+  //   }
+  // }
+
+
+  // GAME WON LOGIC
+
+  // const [ winningsForAlice, winningsForBob ] = 
+  //   winnerIsAlice(state) ? [2, 0] :
+  //   winnerIsBob(state) ? [2, 0] :
+  //   [1,1]
+
+  // transfer(winningsForAlice * initialBet).to(A);
+  // transfer(winningsForBob * initialBet).to(B);
 
   transfer(initialBet).to(A);
   transfer(initialBet).to(B);
