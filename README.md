@@ -123,6 +123,7 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 - open modal, with option to start a new game, when the game ends
 - enable win logic in contract and update the frontend game end message
 - add in "copy invite link" button
+- enable random starting player
 
 Backlog
 - update favicon
@@ -132,7 +133,6 @@ Backlog
 - validate bet value
 - display loading icon while contract deploys
 - display timer/loader while other player takes their turn
-- enable random starting player
 
 </p>
 </details>

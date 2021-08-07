@@ -159,6 +159,7 @@ const validateBet = (interact) => {
 //////////////////////// Participant Profiles ///////////////////////////
 
 const Players = {
+  ...hasRandom,
   gameEnds: Fun([UInt], Null),
   getMove: Fun([State], UInt),
 };
@@ -194,9 +195,11 @@ export const main = Reach.App(() => {
   
   A.only(() => {
     const { initialBet, deadline } = validateBet(interact);
+    const _coinFlipA = interact.random();
+    const commitA = declassify(digest(_coinFlipA));
   });
 
-  A.publish(initialBet, deadline)
+  A.publish(initialBet, deadline, commitA)
     .pay(initialBet);
 
   require(betIsValid(initialBet));
@@ -205,44 +208,22 @@ export const main = Reach.App(() => {
 
   B.only(() => {
     interact.acceptBet();
+    const coinFlipB = declassify(interact.random());
   });
 
-  B.publish().pay(initialBet)
-    // .timeout(deadline, () => closeTo(A, interact.gameEnds(3)));
+  B.publish(coinFlipB).pay(initialBet)
 
-  // NEW CONTRACT START SEGMENT
-  
-  // A.only(() => {
-  //   const { initialBet, deadline } = validateBet(interact);
-  //   const _coinFlipA = interact.random();
-  //   const commitA = declassify(digest(_coinFlipA));
-  // });
+  commit()
 
-  // A.publish(initialBet, deadline, commitA)
-  //   .pay(initialBet);
+  A.only(() => {
+    const coinFlipA = declassify(_coinFlipA);
+  });
+  A.publish(coinFlipA);
 
-  // require(betIsValid(initialBet));
+  require(commitA == digest(coinFlipA));
+  const participantIndex = (((coinFlipA % 2) + (coinFlipB % 2)) % 2) == 0 ? 0 : 1;
 
-  // commit();
-
-  // B.only(() => {
-  //   interact.acceptBet();
-  //   const coinFlipB = declassify(interact.random());
-  // });
-
-  // B.publish(coinFlipB).pay(initialBet)
-
-  // A.only(() => {
-  //   const coinFlipA = declassify(_coinFlipA);
-  // });
-  // A.publish(coinFlipA);
-
-  // require(commitA == digest(coinFlipA));
-  // const AliceIsFirst = (((coinFlipA % 2) + (coinFlipB % 2)) % 2) == 0 ? 0 : 1;
-
-  // GAME LOOP
-
-  const currentTurnIndex = 1//AliceIsFirst;
+  const currentTurnIndex = participantIndex;
   var state = initialState(currentTurnIndex);
   invariant( balance() == 2 * initialBet );
   while ( rowsAreNotEmpty(state) ) {
