@@ -5,7 +5,7 @@ import JoinGame from './JoinGame'
 
 export default function StartOrJoinGame() {
     return (<>
-        <button onClick={() => set(<StartGame></StartGame>, 'modalPage')}>Start Game</button>
-        <button onClick={() => set(<JoinGame></JoinGame>, 'modalPage')}>Join Game</button>
+        <button onClick={() => set(<StartGame/>, 'modalPage')}>Start Game</button>
+        <button onClick={() => set(<JoinGame/>, 'modalPage')}>Join Game</button>
     </>)
 }

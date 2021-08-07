@@ -7,11 +7,9 @@ export default function StartGame() {
     const [bet, setBet] = useState(0)
 
     const startGame = async () => {
-        // TODO validate bet value
-        // TODO display loading icon while contract deploys
         set(bet, 'initialBet')
         await deploy()
-        set(<Invite></Invite>, 'modalPage')
+        set(<Invite/>, 'modalPage')
     }
 
     return (<>

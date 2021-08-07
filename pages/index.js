@@ -29,9 +29,9 @@ export default function Home() {
 
   return (
     <div>
-      <Board></Board>
+      <Board/>
       <button onClick={connectWallet} disabled={account === null ? false : true}>connect wallet to begin</button><br/>
-      <Modal visible={modalVisible}></Modal>
+      <Modal visible={modalVisible}/>
     </div>
   )
 }
