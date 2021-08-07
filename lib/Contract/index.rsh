@@ -210,7 +210,7 @@ export const main = Reach.App(() => {
   });
 
   B.publish().pay(initialBet)
-    .timeout(deadline, () => closeTo(A, endOfGame));
+    // .timeout(deadline, () => closeTo(A, endOfGame));
 
   // NEW CONTRACT START SEGMENT
   
@@ -244,29 +244,29 @@ export const main = Reach.App(() => {
 
   // GAME LOOP
 
-  // const currentTurnIndex = AliceIsFirst;
-  // var state = initialState(currentTurnIndex);
-  // invariant( balance() == 2 * initialBet );
-  // while ( rowsAreNotEmpty(state) ) {
+  const currentTurnIndex = 1//AliceIsFirst;
+  var state = initialState(currentTurnIndex);
+  invariant( balance() == 2 * initialBet );
+  while ( rowsAreNotEmpty(state) ) {
     
-  //   if (state.currentTurnIndex == 0) {
-  //     commit();
-  //     A.only(() => {
-  //       const houseIndex = validateMove(interact, state);
-  //     });
-  //     A.publish(houseIndex);
-  //     state = executeMove(state, houseIndex);
-  //     continue;
-  //   } else {
-  //     commit();
-  //     B.only(() => {
-  //       const houseIndex = validateMove(interact, state);
-  //     });
-  //     B.publish(houseIndex);
-  //     state = executeMove(state, houseIndex);
-  //     continue;
-  //   }
-  // }
+    if (state.currentTurnIndex == 0) {
+      commit();
+      A.only(() => {
+        const houseIndex = validateMove(interact, state);
+      });
+      A.publish(houseIndex);
+      state = executeMove(state, houseIndex);
+      continue;
+    } else {
+      commit();
+      B.only(() => {
+        const houseIndex = validateMove(interact, state);
+      });
+      B.publish(houseIndex);
+      state = executeMove(state, houseIndex);
+      continue;
+    }
+  }
 
 
   // GAME WON LOGIC

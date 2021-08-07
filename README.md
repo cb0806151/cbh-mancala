@@ -115,12 +115,18 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
     - add in extra turn when you score a point
     - add in win logic that transfers the contract balance to the winner
 
+8/7/21
+- update package.json to eliminate [refresh issue](https://github.com/vercel/next.js/issues/10061)
+- get moves from players through the UI 
+
 Backlog
 - check out next.js tips and tricks
 - halfway point recap
 - update favicon
 - test out connecting to the Conflux network
 - start integrating UI framework
+- update board after player moves a houses pieces
+- let the player know when its their turn
 
 </p>
 </details>
