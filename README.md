@@ -119,6 +119,7 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 - update package.json to eliminate [refresh issue](https://github.com/vercel/next.js/issues/10061)
 - get moves from players through the UI 
 - let the player know when its their turn
+- update board after player moves a houses pieces
 
 Backlog
 - check out next.js tips and tricks
@@ -126,7 +127,7 @@ Backlog
 - update favicon
 - test out connecting to the Conflux network
 - start integrating UI framework
-- update board after player moves a houses pieces
+- open modal, with option to start a new game, when the game ends
 
 </p>
 </details>
