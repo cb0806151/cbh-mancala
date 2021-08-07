@@ -1,7 +1,7 @@
 import React from 'react'
 
-export default function House({houseIndex, pieces}) {
+export default function House({houseIndex, mayTakeTurn, notMyHouses, pieces}) {
     return (<>
-        <button id={houseIndex} disabled={pieces === 0 ? true : false}>{pieces}</button>
+        <button id={houseIndex} disabled={(notMyHouses || (pieces === 0 || !mayTakeTurn)) ? true : false}>{pieces}</button>
     </>)
 }
