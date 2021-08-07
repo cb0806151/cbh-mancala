@@ -49,11 +49,9 @@ const rowsAreNotEmpty = (state) => {
   return (leftRowIsEmpty(state.board) == false && rightRowIsEmpty(state.board) == false)
 }
 
-// GAME WON LOGIC
+const winnerIsAlice = (state) => state.points[0] > state.points[1];
 
-// const winnerIsAlice = (state) => state.points[0] > state.points[1];
-
-// const winnerIsBob = (state) => state.points[1] > state.points[0];
+const winnerIsBob = (state) => state.points[1] > state.points[0];
 
 /////////////////////////////////////////////////////////////////////////
 
@@ -161,7 +159,7 @@ const validateBet = (interact) => {
 //////////////////////// Participant Profiles ///////////////////////////
 
 const Players = {
-  gameEnds: Fun([], Null),
+  gameEnds: Fun([UInt], Null),
   getMove: Fun([State], UInt),
 };
 
@@ -188,9 +186,9 @@ export const main = Reach.App(() => {
   const B   = Participant('Bob', {...Players, ...Bob});
   deploy();
 
-  const endOfGame = () => {
+  const endOfGame = (resolution) => {
     each([A, B], () => {
-        interact.gameEnds()
+        interact.gameEnds(resolution)
     });
   };
   
@@ -210,7 +208,7 @@ export const main = Reach.App(() => {
   });
 
   B.publish().pay(initialBet)
-    // .timeout(deadline, () => closeTo(A, endOfGame));
+    // .timeout(deadline, () => closeTo(A, interact.gameEnds(3)));
 
   // NEW CONTRACT START SEGMENT
   
@@ -268,20 +266,18 @@ export const main = Reach.App(() => {
     }
   }
 
+  const [ winningsForAlice, winningsForBob ] = 
+    winnerIsAlice(state) ? [2, 0] :
+    winnerIsBob(state) ? [0, 2] :
+    [1,1]
 
-  // GAME WON LOGIC
+  transfer(winningsForAlice * initialBet).to(A);
+  transfer(winningsForBob * initialBet).to(B);
 
-  // const [ winningsForAlice, winningsForBob ] = 
-  //   winnerIsAlice(state) ? [2, 0] :
-  //   winnerIsBob(state) ? [2, 0] :
-  //   [1,1]
+  const gameResolution = winningsForAlice == 2 ? 1 : 
+                         winningsForBob == 2 ? 2 : 0;
 
-  // transfer(winningsForAlice * initialBet).to(A);
-  // transfer(winningsForBob * initialBet).to(B);
-
-  transfer(initialBet).to(A);
-  transfer(initialBet).to(B);
-  endOfGame()
+  endOfGame(gameResolution)
   commit();
   exit();
 

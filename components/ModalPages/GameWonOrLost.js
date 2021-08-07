@@ -1,10 +1,12 @@
-import React from 'react'
-import { set } from '../../lib/StateManagement/State'
+import React, { useEffect } from 'react'
+import { get, set } from '../../lib/StateManagement/State'
 import StartOrJoinGame from './StartOrJoinGame'
 
 export default function GameWonOrLost() {
+    const gameEndMessage = get('gameEndMessage')
+
     return (<>
-        <p>Evie wins the game and takes home 2 CFX</p>
+        <p>{gameEndMessage}</p>
         <button onClick={() => set(<StartOrJoinGame/>, 'modalPage')}>New Game</button>
     </>)
 }
