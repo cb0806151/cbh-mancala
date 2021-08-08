@@ -31,6 +31,10 @@ export default function Home() {
 
   return (
     <div>
+      <Head>
+        <title>Conflux Mancala</title>
+        <link rel="shortcut icon" href="/favicon.ico" />
+      </Head>
       <Board/>
       <p>{loadingMessage}</p>
       <button onClick={connectWallet} disabled={account === null ? false : true}>connect wallet to begin</button><br/>

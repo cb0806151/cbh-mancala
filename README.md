@@ -94,6 +94,7 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 - decide on using semicolons or not
 - start work on draft of branching modal system
 - build out drafts of the rest of the pages for the modal
+- validate bet value
 
 8/1/21
 - work on "have the index.mjs file complete one actual test of the game"
@@ -124,16 +125,18 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 - enable win logic in contract and update the frontend game end message
 - add in "copy invite link" button
 - enable random starting player
+
+8/8/21
 - display timer/loader/message while contract deploys
 - display timer/loader/message while other player takes their turn
 - display timer/loader/message while the coin flips
-
-Backlog
 - update favicon
 - update page name
+
+Backlog
 - test out connecting to the Conflux network
 - start integrating UI framework
-- validate bet value
+- update how to play rules
 
 </p>
 </details>
@@ -147,7 +150,6 @@ Backlog
 - Learn some ways to optimize the contract
 - add in win logic for emptying the board to the winner
 - Add in take-opposite-house rule
-- Optimize contract speed
 - A clock that starts when another player takes their turn, if it runs all the way down the other player forfeits the game
 
 </p>
