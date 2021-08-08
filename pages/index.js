@@ -3,23 +3,21 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Board from '../components/Board';
-import Modal from '../components/Modal'
+import ModalWrapper from '../components/ModalWrapper'
 import { fundAccount, getAccount, getBalance } from '../lib/Layers/Wallet';
 import { stateQuery, set } from '../lib/StateManagement/State'
 import { Button, Grid } from 'semantic-ui-react';
 
 export default function Home() {
-  const [modalVisible, setModalVisible] = useState()
-  const [account, setAccount] = useState(null)
   const [loadingMessage, setLoadingMessage] = useState()
+  const [account, setAccount] = useState(null)
 
   useEffect(() => {
-    const modalVisible$ = stateQuery.select('modalVisible').subscribe(setModalVisible)
-    const account$ = stateQuery.select('account').subscribe(setAccount)
     const loadingMessage$ = stateQuery.select('loadingMessage').subscribe(setLoadingMessage)
+    const account$ = stateQuery.select('account').subscribe(setAccount)
     return () => {
-      modalVisible$.unsubscribe()
       loadingMessage$.unsubscribe()
+      account$.unsubscribe()
     }
   }, [])
 
@@ -40,7 +38,7 @@ export default function Home() {
           <Board/>
           <p>{loadingMessage}</p>
           <Button primary className="centered" onClick={connectWallet} disabled={account === null ? false : true}>connect wallet to begin</Button>
-          <Modal visible={modalVisible}/>
+          <ModalWrapper/>
         </Grid.Column>
       </Grid>
   )

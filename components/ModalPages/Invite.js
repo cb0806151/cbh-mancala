@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Button, Form, Modal, TextArea } from 'semantic-ui-react';
 import { stateQuery } from '../../lib/StateManagement/State'
 
 export default function Invite() {
@@ -14,9 +15,13 @@ export default function Invite() {
     };
 
     return (<>
-        <p>Send this invite to someone so that they can join the game.</p>
-        <textarea value={inviteString} readOnly></textarea>
-        <button onClick={copyInviteLink}>Copy Invite</button>
-        <p>Once they join the game, a coin will flip to determine who goes first, then this window will close, and you can start the game.</p>
+        <Modal.Content>
+            <p>Send this invite to someone so that they can join the game.</p>
+            <Form>
+                <TextArea value={inviteString} readOnly></TextArea>
+            </Form>
+            <Button onClick={copyInviteLink}>Copy Invite</Button>
+            <p>Once they join the game, a coin will flip to determine who goes first, then this window will close, and you can start the game.</p>
+        </Modal.Content>
     </>)
 }

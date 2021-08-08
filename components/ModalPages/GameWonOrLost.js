@@ -1,12 +1,19 @@
-import React, { useEffect } from 'react'
+import React from 'react'
+import { Button, Modal } from 'semantic-ui-react'
 import { get, set } from '../../lib/StateManagement/State'
-import StartOrJoinGame from './StartOrJoinGame'
+import JoinGame from './JoinGame'
+import StartGame from './StartGame'
 
 export default function GameWonOrLost() {
     const gameEndMessage = get('gameEndMessage')
 
     return (<>
-        <p>{gameEndMessage}</p>
-        <button onClick={() => set(<StartOrJoinGame/>, 'modalPage')}>New Game</button>
+        <Modal.Content>
+            <p>{gameEndMessage}</p>
+        </Modal.Content>
+        <Modal.Actions>
+            <Button positive onClick={() => set(<StartGame/>, 'modalPage')}>Start a New Game</Button>
+            <Button positive onClick={() => set(<JoinGame/>, 'modalPage')}>Join a New Game</Button>
+        </Modal.Actions>
     </>)
 }

@@ -136,10 +136,11 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 - start integrating UI framework
 - style the home page
 - style the board
+- style the modals
 
 Backlog
 - test out connecting to the Conflux network
-- style the modals
+- fix 'open modal' flow
 - Learn some ways to optimize the contract
 
 </p>
