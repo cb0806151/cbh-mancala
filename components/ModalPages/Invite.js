@@ -17,6 +17,6 @@ export default function Invite() {
         <p>Send this invite to someone so that they can join the game.</p>
         <textarea value={inviteString} readOnly></textarea>
         <button onClick={copyInviteLink}>Copy Invite</button>
-        <p>Once they join the game, this window will close and you can start the game.</p>
+        <p>Once they join the game, a coin will flip to determine who goes first, then this window will close, and you can start the game.</p>
     </>)
 }

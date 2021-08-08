@@ -9,6 +9,7 @@ export default function StartGame() {
     const startGame = async () => {
         set(bet, 'initialBet')
         await deploy()
+        set("", 'loadingMessage')
         set(<Invite/>, 'modalPage')
     }
 

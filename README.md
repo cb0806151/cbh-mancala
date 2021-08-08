@@ -124,6 +124,9 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 - enable win logic in contract and update the frontend game end message
 - add in "copy invite link" button
 - enable random starting player
+- display timer/loader/message while contract deploys
+- display timer/loader/message while other player takes their turn
+- display timer/loader/message while the coin flips
 
 Backlog
 - update favicon
@@ -131,8 +134,6 @@ Backlog
 - test out connecting to the Conflux network
 - start integrating UI framework
 - validate bet value
-- display loading icon while contract deploys
-- display timer/loader while other player takes their turn
 
 </p>
 </details>
@@ -146,6 +147,8 @@ Backlog
 - Learn some ways to optimize the contract
 - add in win logic for emptying the board to the winner
 - Add in take-opposite-house rule
+- Optimize contract speed
+- A clock that starts when another player takes their turn, if it runs all the way down the other player forfeits the game
 
 </p>
 </details>

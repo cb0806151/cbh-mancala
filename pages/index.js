@@ -10,13 +10,15 @@ import { stateQuery, set } from '../lib/StateManagement/State'
 export default function Home() {
   const [modalVisible, setModalVisible] = useState()
   const [account, setAccount] = useState(null)
+  const [loadingMessage, setLoadingMessage] = useState()
 
   useEffect(() => {
     const modalVisible$ = stateQuery.select('modalVisible').subscribe(setModalVisible)
     const account$ = stateQuery.select('account').subscribe(setAccount)
+    const loadingMessage$ = stateQuery.select('loadingMessage').subscribe(setLoadingMessage)
     return () => {
       modalVisible$.unsubscribe()
-      account$.unsubscribe()
+      loadingMessage$.unsubscribe()
     }
   }, [])
 
@@ -30,6 +32,7 @@ export default function Home() {
   return (
     <div>
       <Board/>
+      <p>{loadingMessage}</p>
       <button onClick={connectWallet} disabled={account === null ? false : true}>connect wallet to begin</button><br/>
       <Modal visible={modalVisible}/>
     </div>
