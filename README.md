@@ -132,11 +132,11 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 - display timer/loader/message while the coin flips
 - update favicon
 - update page name
+- update 'how to play' rules
 
 Backlog
 - test out connecting to the Conflux network
 - start integrating UI framework
-- update how to play rules
 
 </p>
 </details>
@@ -150,6 +150,7 @@ Backlog
 - Learn some ways to optimize the contract
 - add in win logic for emptying the board to the winner
 - Add in take-opposite-house rule
+- Add in extra turn logic
 - A clock that starts when another player takes their turn, if it runs all the way down the other player forfeits the game
 
 </p>
@@ -176,6 +177,7 @@ Notes:
 - start adding new stuff to the contract even if it isn't working; it be commented out for now and enabled later
 - start setting up the frontend even though it isn't functional yet
 - completing one game as a test took roughly half an hour 
+- how do I check if the player dropped the last piece in the store?
 
 - frontend architecture stuff
     - create the components for the basic board
