@@ -12,6 +12,7 @@ export default function GameWonOrLost() {
             <p>{gameEndMessage}</p>
         </Modal.Content>
         <Modal.Actions>
+            <Button negative onClick={() => set(false, 'modalVisible')}>Close</Button>
             <Button positive onClick={() => set(<StartGame/>, 'modalPage')}>Start a New Game</Button>
             <Button positive onClick={() => set(<JoinGame/>, 'modalPage')}>Join a New Game</Button>
         </Modal.Actions>

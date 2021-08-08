@@ -7,6 +7,7 @@ import ModalWrapper from '../components/ModalWrapper'
 import { fundAccount, getAccount, getBalance } from '../lib/Layers/Wallet';
 import { stateQuery, set } from '../lib/StateManagement/State'
 import { Button, Grid } from 'semantic-ui-react';
+import HowToPlay from '../components/ModalPages/HowToPlay';
 
 export default function Home() {
   const [loadingMessage, setLoadingMessage] = useState()
@@ -25,11 +26,15 @@ export default function Home() {
     await getAccount()
     await fundAccount()
     await getBalance()
+  }
+
+  const openModal = () => {
+    set(<HowToPlay/>, 'modalPage')
     set(true, 'modalVisible')
   }
 
   return (
-      <Grid centered columns={2}>
+      <Grid verticalAlign='middle' centered style={{height: '100vh'}} columns={2}>
         <Grid.Column textAlign="center">
           <Head>
             <title>Conflux Mancala</title>
@@ -37,7 +42,16 @@ export default function Home() {
           </Head>
           <Board/>
           <p>{loadingMessage}</p>
-          <Button primary className="centered" onClick={connectWallet} disabled={account === null ? false : true}>connect wallet to begin</Button>
+          <Grid centered columns={2}>
+            <Grid.Row>
+              <Button primary onClick={openModal} disabled={account === null ? true : false}>Start</Button>
+            </Grid.Row>
+            <Grid.Row>
+              {account === null ? 
+                <Button className="centered" onClick={connectWallet}>connect wallet to begin</Button>
+              : null}
+            </Grid.Row>
+          </Grid>
           <ModalWrapper/>
         </Grid.Column>
       </Grid>
