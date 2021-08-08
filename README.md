@@ -133,10 +133,14 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 - update favicon
 - update page name
 - update 'how to play' rules
+- start integrating UI framework
+- style the home page
 
 Backlog
 - test out connecting to the Conflux network
-- start integrating UI framework
+- style the modals
+- style the board
+- Learn some ways to optimize the contract
 
 </p>
 </details>
@@ -147,7 +151,6 @@ Backlog
 - Alternate rules: different common rulesets that can be chosen by the user who starts the game.
 - Make bets optional
 - Possibly change state management systems
-- Learn some ways to optimize the contract
 - add in win logic for emptying the board to the winner
 - Add in take-opposite-house rule
 - Add in extra turn logic
