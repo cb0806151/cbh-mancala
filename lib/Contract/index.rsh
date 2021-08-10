@@ -57,40 +57,20 @@ const winnerIsBob = (state) => state.points[1] > state.points[0];
 
 ///////////////////////////// Game Logic ////////////////////////////////
 
-// This function calculates the amount of pieces added (newPiecesCount) to the targetHouseIndex 
-// when the player moves the piecesCount from houseIndex around the board.
-const getUpdatedPiecesCountForHouse = (originalPiecesCount, targetHouseIndex, houseIndex, piecesCount) => {
-  // the actualDistance is the amount of spaces the pieces must travel through to get to the targetHouseIndex
-  const actualDistance = targetHouseIndex <= houseIndex ? (12 - houseIndex) + targetHouseIndex : targetHouseIndex - houseIndex;
+const caclulateLaps = (endIndex, startIndex, piecesCount, houseCount) => {
+  // actualDistance gets the amount of pieces needed to get from the startIndex to the endIndex
+  const actualDistance = endIndex < startIndex ? (houseCount - startIndex) + endIndex : endIndex - startIndex;
 
-  // the newPieces calculates how many spaces the pieces can travel after they've gotten to the targetHouseIndex and reduces it down to the additional pieces added to the original pieces
-  const newPieces = (piecesCount >= actualDistance && ((piecesCount - actualDistance) / 12) < (UInt.max - 1)) ? ((piecesCount - actualDistance) / 12) + 1 : 0;
-  
-  // if there aren't enough pieces to cross the actualDistance then the piece count of the targetHouseIndex won't change and can be returned
-  if (piecesCount < actualDistance) return originalPiecesCount;
-
-  // the 
-  const newPiecesCount = (originalPiecesCount >= 0 && newPieces < UInt.max && originalPiecesCount <= (UInt.max - newPieces)) ? originalPiecesCount + newPieces : originalPiecesCount;
-  return newPiecesCount;
-}
-
-// This function calculates the amount of times a player has added a piece to their store
-// when starting from a house at houseIndex with x amount of pieces (piecesCount).
-
-// Turnaroundpoint represents the index of the store at either the left or right 
-// side of the board.
-const caclulateLaps = (turnaroundPoint, houseIndex, piecesCount) => {
-  // actualDistance gets the amount of pieces needed to get from the houseIndex to the turnaroundPoint
-  const actualDistance = turnaroundPoint < houseIndex ? (13 - houseIndex) + turnaroundPoint : turnaroundPoint - houseIndex;
-  // If there are enough pieces to get there, then reduce them by that amount,
-  // and divide the remainder by the length of the board to see how many more  
-  // laps can be made 
-  const laps = (piecesCount >= actualDistance && ((piecesCount - actualDistance) / 12) < (UInt.max - 1)) ? ((piecesCount - actualDistance) / 12) + 1 : 0;
-  // if there aren't enough pieces to get from the houseIndex to the turnaroundPoint,
-  // then there aren't enough pieces to score a point and therefore a 0 can be returned
-  if (piecesCount < actualDistance) return 0;
-
-  return laps;
+  if (piecesCount < actualDistance) {
+    // if there aren't enough pieces to get from the startIndex to the endIndex,
+    // then there aren't enough pieces to make a circuit and therefore a 0 can be returned
+    return 0;
+  } else {
+    // If there are enough pieces to get there, then reduce them by that amount,
+    // and divide the remainder by the length of the board to see how many more  
+    // circuits can be made 
+    return ((piecesCount - actualDistance) / 12 < (UInt.max - 1)) ? ((piecesCount - actualDistance) / 12) + 1 : 0;
+  }
 }
 
 // Moves the pieces contained at a house with houseIndex around the board, thereby completing one turn
@@ -99,11 +79,14 @@ const movePieces = (state, houseIndex) => {
   const playersStoreIndex = state.currentTurnIndex;
   const piecesCount = state.board[houseIndex];
   const turnaroundPoint = playersStoreIndex == 0 ? 12 : 6;
-  const points = caclulateLaps(turnaroundPoint, houseIndex, piecesCount);
+  const points = caclulateLaps(turnaroundPoint, houseIndex, piecesCount, 13);
   
   const updatedPiecesCount = piecesCount - points
   const preparedBoard = state.board.set(houseIndex, 0);
-  const updatedBoard = preparedBoard.mapWithIndex((value, index) => getUpdatedPiecesCountForHouse(value, index, houseIndex, updatedPiecesCount));
+  const updatedBoard = preparedBoard.mapWithIndex((value, index) => {
+    const laps = caclulateLaps(index, houseIndex, updatedPiecesCount, 12)
+    return (value <= (UInt.max - laps)) ? value + laps : value;
+  });
   const verifiedPoints = (state.points[playersStoreIndex] >= 0 && state.points[playersStoreIndex] <= UInt.max - points) ? state.points[playersStoreIndex] + points : state.points[playersStoreIndex];
   const updatedPoints = state.points.set(playersStoreIndex, verifiedPoints);
   const updatedState = { 

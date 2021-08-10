@@ -1,3 +1,49 @@
+
+const movePieces = (state, houseIndex) => {
+  const playersStoreIndex = state.currentTurnIndex;
+  const piecesCount = state.board[houseIndex];
+  const turnaroundPoint = playersStoreIndex == 0 ? 12 : 6;
+  const points = calculateCircuits(turnaroundPoint, houseIndex, piecesCount, 13);
+  
+  const updatedPiecesCount = piecesCount - points
+  const preparedBoard = state.board.set(houseIndex, 0);
+  const updatedBoard = preparedBoard.mapWithIndex((value, index) => {
+    const circuits = calculateCircuits(index, houseIndex, updatedPiecesCount, 12)
+    return value + circuits
+  });
+  const verifiedPoints = (state.points[playersStoreIndex] >= 0 && state.points[playersStoreIndex] <= UInt.max - points) ? state.points[playersStoreIndex] + points : state.points[playersStoreIndex];
+  const updatedPoints = state.points.set(playersStoreIndex, verifiedPoints);
+  const updatedState = { 
+    currentTurnIndex: playersStoreIndex == 1 ? 0 : 1, 
+    board: updatedBoard,
+    points: updatedPoints,
+  }
+
+  return updatedState;
+}
+
+
+
+const movePieces = (state, houseIndex) => {
+  const playersStoreIndex = state.currentTurnIndex;
+  const piecesCount = state.board[houseIndex];
+  const turnaroundPoint = playersStoreIndex == 0 ? 12 : 6;
+  const points = caclulateLaps(turnaroundPoint, houseIndex, piecesCount);
+  
+  const updatedPiecesCount = piecesCount - points
+  const preparedBoard = state.board.set(houseIndex, 0);
+  const updatedBoard = preparedBoard.mapWithIndex((value, index) => getUpdatedPiecesCountForHouse(value, index, houseIndex, updatedPiecesCount));
+  const verifiedPoints = (state.points[playersStoreIndex] >= 0 && state.points[playersStoreIndex] <= UInt.max - points) ? state.points[playersStoreIndex] + points : state.points[playersStoreIndex];
+  const updatedPoints = state.points.set(playersStoreIndex, verifiedPoints);
+  const updatedState = { 
+    currentTurnIndex: playersStoreIndex == 1 ? 0 : 1, 
+    board: updatedBoard,
+    points: updatedPoints,
+  }
+
+  return updatedState;
+}
+
 // Key:
 // -Stores = inlets on each side of the board where the players collect points
 // -Houses = 12 inlets covering the middle of the board
