@@ -13,7 +13,7 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 - clone the repository
 - open a terminal to the `cbh-mancala` folder 
 - from there run the command `yarn install`
-- once that has completed run `cd contract`
+- once that has completed run `cd lib/contract`
 - (if on Windows) run the `wsl` command to switch over to linux
 - run the `curl https://docs.reach.sh/reach -o reach ; chmod +x reach` command to download reach into the contract folder
 - run the `./reach version` command to ensure it installed
