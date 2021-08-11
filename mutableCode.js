@@ -1,20 +1,90 @@
 
+// actualDistance gets the amount of pieces needed to get from the startIndex to the endIndex
+const actualDistance = houseCount == 13 ? 
+(endIndex < startIndex ? (houseCount - startIndex) + endIndex : endIndex - startIndex) :
+(endIndex <= startIndex ? (houseCount - startIndex) + endIndex : endIndex - startIndex)
+
+
+
+// This function calculates the amount of pieces added (newPiecesCount) to the targetHouseIndex 
+// when the player moves the piecesCount from houseIndex around the board.
+const getUpdatedPiecesCountForHouse = (originalPiecesCount, targetHouseIndex, houseIndex, piecesCount) => {
+
+  const actualDistance = targetHouseIndex <= houseIndex ? (12 - houseIndex) + targetHouseIndex : targetHouseIndex - houseIndex;
+
+  const newPieces = (piecesCount >= actualDistance && ((piecesCount - actualDistance) / 12) < (UInt.max - 1)) ? ((piecesCount - actualDistance) / 12) + 1 : 0;
+
+  if (piecesCount < actualDistance) return originalPiecesCount;
+
+  const newPiecesCount = (originalPiecesCount >= 0 && newPieces < UInt.max && originalPiecesCount <= (UInt.max - newPieces)) ? originalPiecesCount + newPieces : originalPiecesCount;
+  return newPiecesCount;
+}
+
+
+const caclulateLaps = (turnaroundPoint, houseIndex, piecesCount) => {
+  
+  const actualDistance = turnaroundPoint < houseIndex ? (13 - houseIndex) + turnaroundPoint : turnaroundPoint - houseIndex;
+
+  const laps = (piecesCount >= actualDistance && ((piecesCount - actualDistance) / 12) < (UInt.max - 1)) ? ((piecesCount - actualDistance) / 12) + 1 : 0;
+
+  if (piecesCount < actualDistance) return 0;
+
+  return laps;
+}
+
+
+
+const calculateNextTurnIndex = (endIndex, startIndex, piecesCount, currentTurnIndex) => {
+  // actualDistance gets the amount of pieces needed to get from the startIndex to the endIndex
+  const actualDistance = endIndex < startIndex ? (13 - startIndex) + endIndex : endIndex - startIndex;
+  if (piecesCount < actualDistance) {
+    return currentTurnIndex == 1 ? 0 : 1;
+  } else {
+    if ((piecesCount - actualDistance) < 12) {
+      return currentTurnIndex == 1 ? 0 : 1;
+    } else {
+      if (((piecesCount - actualDistance) % 12) == 0) {
+        return currentTurnIndex
+      } else {
+        return currentTurnIndex == 1 ? 0 : 1;
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Moves the pieces contained at a house with houseIndex around the board, thereby completing one turn
+// on behalf of the player.
 const movePieces = (state, houseIndex) => {
   const playersStoreIndex = state.currentTurnIndex;
   const piecesCount = state.board[houseIndex];
   const turnaroundPoint = playersStoreIndex == 0 ? 12 : 6;
-  const points = calculateCircuits(turnaroundPoint, houseIndex, piecesCount, 13);
+  const points = caclulateLaps(turnaroundPoint, houseIndex, piecesCount, 13);
   
   const updatedPiecesCount = piecesCount - points
   const preparedBoard = state.board.set(houseIndex, 0);
   const updatedBoard = preparedBoard.mapWithIndex((value, index) => {
-    const circuits = calculateCircuits(index, houseIndex, updatedPiecesCount, 12)
-    return value + circuits
+    const laps = caclulateLaps(index, houseIndex, updatedPiecesCount, 12)
+    return (value <= (UInt.max - laps)) ? value + laps : value;
   });
   const verifiedPoints = (state.points[playersStoreIndex] >= 0 && state.points[playersStoreIndex] <= UInt.max - points) ? state.points[playersStoreIndex] + points : state.points[playersStoreIndex];
   const updatedPoints = state.points.set(playersStoreIndex, verifiedPoints);
+  const nextTurnIndex = calculateNextTurnIndex(turnaroundPoint, houseIndex, piecesCount, playersStoreIndex)
   const updatedState = { 
-    currentTurnIndex: playersStoreIndex == 1 ? 0 : 1, 
+    currentTurnIndex: nextTurnIndex, 
     board: updatedBoard,
     points: updatedPoints,
   }

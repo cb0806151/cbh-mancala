@@ -142,6 +142,11 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 8/9/21
 - Learn some ways to optimize the contract
 
+8/10/21
+- disable start button while game is in session
+- fix error introduced while optimizing the contract
+- Add in extra turn logic
+
 Backlog
 - test out connecting to the Conflux network
 
@@ -156,8 +161,8 @@ Backlog
 - Possibly change state management systems
 - add in win logic for emptying the board to the winner
 - Add in take-opposite-house rule
-- Add in extra turn logic
 - A clock that starts when another player takes their turn, if it runs all the way down the other player forfeits the game
+- change theme to dark mode
 
 </p>
 </details>

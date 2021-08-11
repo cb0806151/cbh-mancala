@@ -11,14 +11,17 @@ import HowToPlay from '../components/ModalPages/HowToPlay';
 
 export default function Home() {
   const [loadingMessage, setLoadingMessage] = useState()
+  const [gameInProgress, setGameInProgress] = useState()
   const [account, setAccount] = useState(null)
 
   useEffect(() => {
     const loadingMessage$ = stateQuery.select('loadingMessage').subscribe(setLoadingMessage)
     const account$ = stateQuery.select('account').subscribe(setAccount)
+    const gameInProgress$ = stateQuery.select('gameInProgress').subscribe(setGameInProgress)
     return () => {
       loadingMessage$.unsubscribe()
       account$.unsubscribe()
+      gameInProgress$.unsubscribe()
     }
   }, [])
 
@@ -44,7 +47,7 @@ export default function Home() {
           <p>{loadingMessage}</p>
           <Grid centered columns={2}>
             <Grid.Row>
-              <Button primary onClick={openModal} disabled={account === null ? true : false}>Start</Button>
+              <Button primary onClick={openModal} disabled={(account === null || gameInProgress) ? true : false}>Start</Button>
             </Grid.Row>
             <Grid.Row>
               {account === null ? 

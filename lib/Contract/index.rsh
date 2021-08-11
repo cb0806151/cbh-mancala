@@ -59,7 +59,9 @@ const winnerIsBob = (state) => state.points[1] > state.points[0];
 
 const caclulateLaps = (endIndex, startIndex, piecesCount, houseCount) => {
   // actualDistance gets the amount of pieces needed to get from the startIndex to the endIndex
-  const actualDistance = endIndex < startIndex ? (houseCount - startIndex) + endIndex : endIndex - startIndex;
+  const actualDistance = houseCount == 13 ? 
+    (endIndex < startIndex ? (houseCount - startIndex) + endIndex : endIndex - startIndex) :
+    (endIndex <= startIndex ? (houseCount - startIndex) + endIndex : endIndex - startIndex)
 
   if (piecesCount < actualDistance) {
     // if there aren't enough pieces to get from the startIndex to the endIndex,
@@ -70,6 +72,18 @@ const caclulateLaps = (endIndex, startIndex, piecesCount, houseCount) => {
     // and divide the remainder by the length of the board to see how many more  
     // circuits can be made 
     return ((piecesCount - actualDistance) / 12 < (UInt.max - 1)) ? ((piecesCount - actualDistance) / 12) + 1 : 0;
+  }
+}
+
+const calculateNextTurnIndex = (startIndex, piecesCount, turnaroundPoint, currentTurnIndex) => {
+  // calculate the last house/store a pieces is dropped in
+  const lastHouseVisited = startIndex <= (UInt.max - piecesCount) ? (startIndex + piecesCount) % 13 : 0;
+  // checks if the last house/store a piece is dropped in is the current players store. If so, it grants them 
+  // an extra turn; if not, the other player goes next
+  if (lastHouseVisited === turnaroundPoint) {
+    return currentTurnIndex
+  } else {
+    return currentTurnIndex == 1 ? 0 : 1;
   }
 }
 
@@ -89,8 +103,9 @@ const movePieces = (state, houseIndex) => {
   });
   const verifiedPoints = (state.points[playersStoreIndex] >= 0 && state.points[playersStoreIndex] <= UInt.max - points) ? state.points[playersStoreIndex] + points : state.points[playersStoreIndex];
   const updatedPoints = state.points.set(playersStoreIndex, verifiedPoints);
+  const nextTurnIndex = calculateNextTurnIndex(houseIndex, piecesCount, turnaroundPoint, playersStoreIndex)
   const updatedState = { 
-    currentTurnIndex: playersStoreIndex == 1 ? 0 : 1, 
+    currentTurnIndex: nextTurnIndex,
     board: updatedBoard,
     points: updatedPoints,
   }
