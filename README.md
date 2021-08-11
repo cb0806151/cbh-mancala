@@ -146,9 +146,12 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 - disable start button while game is in session
 - fix error introduced while optimizing the contract
 - Add in extra turn logic
+- fix betting system
 
 Backlog
 - test out connecting to the Conflux network
+- set up timeout system in contract
+- optimize reach contract further
 
 </p>
 </details>

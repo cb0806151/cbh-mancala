@@ -144,12 +144,9 @@ const executeMove = (state, houseIndex) => {
 const betIsValid = (initialBet) => (initialBet >= 0 && initialBet < UInt.max && initialBet < (UInt.max - initialBet));
 
 const validateBet = (interact) => {
-  const { initialBet, deadline } = declassify(interact.getBet());
+  const initialBet = declassify(interact.getBet());
   assume(betIsValid(initialBet));
-  return {
-    initialBet: initialBet,
-    deadline: deadline
-  };
+  return initialBet;
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -163,10 +160,7 @@ const Players = {
 };
 
 const Alice = {
-  getBet: Fun([], Object({
-    initialBet: UInt,
-    deadline: UInt
-  })),
+  getBet: Fun([], UInt),
 };
 
 const Bob = {
@@ -192,12 +186,12 @@ export const main = Reach.App(() => {
   };
   
   A.only(() => {
-    const { initialBet, deadline } = validateBet(interact);
+    const initialBet = validateBet(interact);
     const _coinFlipA = interact.random();
     const commitA = declassify(digest(_coinFlipA));
   });
 
-  A.publish(initialBet, deadline, commitA)
+  A.publish(initialBet, commitA)
     .pay(initialBet);
 
   require(betIsValid(initialBet));

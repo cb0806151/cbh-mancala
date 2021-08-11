@@ -17,7 +17,7 @@ export default function StartGame() {
 
     return (<>
         <Modal.Content>
-            <Input label="Current Bet" value={bet} onChange={(event) => setBet(event.target.value.replace(/\D/,''))}/>
+            <Input label="Current Bet" value={bet} onChange={(event) => setBet(parseInt(event.target.value.replace(/\D/,'')))}/>
         </Modal.Content>
         <Modal.Actions>
             <Button negative onClick={() => set(<HowToPlay/>, 'modalPage')}>Back</Button>
