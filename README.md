@@ -150,8 +150,7 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 
 Backlog
 - test out connecting to the Conflux network
-- set up timeout system in contract
-- optimize reach contract further
+- record video
 
 </p>
 </details>
@@ -166,6 +165,8 @@ Backlog
 - Add in take-opposite-house rule
 - A clock that starts when another player takes their turn, if it runs all the way down the other player forfeits the game
 - change theme to dark mode
+- optimize reach contract further
+- set up timeout system in contract
 
 </p>
 </details>
@@ -193,6 +194,15 @@ Notes:
 - completing one game as a test took roughly half an hour 
 - how do I check if the player dropped the last piece in the store?
 
+- what would it take to implement the take opposite house rule:
+    - the rule: the take opposite house rule is where the last piece placed in a house, if that house is empty and the house on the opposite side of the board has pieces, is placed directly into the players store along with the pieces from the opposite house
+    - this seems more difficult then the below rule. the calculateLaps function would need to check if 1) its the last piece and 2) if its across the board from the last piece falling into an empty house. If so, the pieces are added directy to the store. Considering that, this seems like this should be its own function that runs after the original piece placement map, maps the point fields instead, and inside that map maps the board again. Needless to say this is very costly for the contract
+
+- what would it take to implement the empty board rule:
+    - the rule: once one player empties their side of the board, the game finishes and all the remaining pieces on the opposite side are transferred to the other players store.
+    - this probably wouldn't be terribly difficult to implement and could be simplified to one function run right before the game finishes that creates a new state with a new board where all the remaining pieces are added to the corresponding players store. That new state is then used to determine who wins. 
+    - update: not easy (I think), the amount of math needed to sum all the slots on one side of the board requires a boatload of verification
+
 - frontend architecture stuff
     - create the components for the basic board
     - create the "contract layer" through which contract data will be accessed
@@ -202,6 +212,11 @@ Notes:
     - files names will be in PascalCase unless they need to be in a different format due to functionality convetions (i.e. how Next.js deals with page routes);
     - no semicolons will be used in the frontend of this project
 
+- ternaries to eliminate with the invariant check:
+    - ternary in calculate laps `return ((piecesCount - actualDistance) / 12 < (UInt.max - 1)) ? ((piecesCount - actualDistance) / 12) + 1 : 0;`
+    - ternary in calculateNextTurnIndex `const lastHouseVisited = startIndex <= (UInt.max - piecesCount) ? (startIndex + piecesCount) % 13 : 0;`
+    - ternary in movePieces `return (value <= (UInt.max - laps)) ? value + laps : value;`
+    - the other ternary in movePieces `const verifiedPoints = (state.points[playersStoreIndex] >= 0 && state.points[playersStoreIndex] <= UInt.max - points) ? state.points[playersStoreIndex] + points : state.points[playersStoreIndex];`
 
 Questions: 
 - I still have no idea how to get the board looping idea to work
