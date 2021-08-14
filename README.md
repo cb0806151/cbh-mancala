@@ -165,6 +165,7 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 - improve board styling
 - fix board width, button color, and button text
 - record video
+- Add in take-opposite-house rule
 
 Backlog
 - start work on article
@@ -178,7 +179,6 @@ Backlog
 - Alternate rules: different common rulesets that can be chosen by the user who starts the game.
 - Make bets optional
 - Possibly change state management systems
-- Add in take-opposite-house rule
 - A clock that starts when another player takes their turn, if it runs all the way down the other player forfeits the game
 - change theme to dark mode
 - optimize reach contract further
@@ -213,6 +213,7 @@ Notes:
 - what would it take to implement the take opposite house rule:
     - the rule: the take opposite house rule is where the last piece placed in a house, if that house is empty and the house on the opposite side of the board has pieces, is placed directly into the players store along with the pieces from the opposite house
     - this seems more difficult then the below rule. the calculateLaps function would need to check if 1) its the last piece and 2) if its across the board from the last piece falling into an empty house. If so, the pieces are added directy to the store. Considering that, this seems like this should be its own function that runs after the original piece placement map, maps the point fields instead, and inside that map maps the board again. Needless to say this is very costly for the contract
+    - it needs to determine if the lastHouseVisited (LHv) is on your side of the board, the LHV only has one point in it, and the house opposite the LHV has points in it. 
 
 - what would it take to implement the empty board rule:
     - the rule: once one player empties their side of the board, the game finishes and all the remaining pieces on the opposite side are transferred to the other players store.
