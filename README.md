@@ -163,9 +163,11 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 - add in win logic for emptying the board to the person whose side of the board still has pieces
 - update gameEnds function to send back a final copy of the state
 - improve board styling
+- fix board width, button color, and button text
+- record video
 
 Backlog
-- record video
+- start work on article
 
 </p>
 </details>

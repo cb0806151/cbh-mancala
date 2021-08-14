@@ -38,7 +38,7 @@ export default function Home() {
 
   return (
       <Grid verticalAlign='middle' centered style={{height: '100vh'}} columns={2}>
-        <Grid.Column textAlign="center">
+        <Grid.Column textAlign="center" style={{width: '70%', maxWidth: '950px'}}>
           <Head>
             <title>Conflux Mancala</title>
             <link rel="shortcut icon" href="/favicon.ico" />
@@ -47,11 +47,11 @@ export default function Home() {
           <p>{loadingMessage}</p>
           <Grid centered columns={2}>
             <Grid.Row>
-              <Button primary onClick={openModal} disabled={(account === null || gameInProgress) ? true : false}>Start</Button>
+              <Button className="green" onClick={openModal} disabled={(account === null || gameInProgress) ? true : false}>Start</Button>
             </Grid.Row>
             <Grid.Row>
               {account === null ? 
-                <Button className="centered" onClick={connectWallet}>connect wallet to begin</Button>
+                <Button className="centered" onClick={connectWallet}>Connect Wallet to Begin</Button>
               : null}
             </Grid.Row>
           </Grid>
