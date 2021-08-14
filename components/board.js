@@ -31,29 +31,25 @@ export default function Board() {
         <Segment>
             <Grid className="middle aligned">
                 <Grid.Row>
-                    <Grid.Column width={2}>
-                        <Store points={points[0]}/>
+                    <Grid.Column className="center aligned" width={3}>
+                        <Store points={points[0]} name={"Alice"} color={"red"}/>
                     </Grid.Column>
-                    <Grid.Column width={12}>
+                    <Grid.Column width={10}>
                     <Grid columns='equal'>
                         <div className="row" ref={alicesHouses}>
-                            {/* <div ref={alicesHouses}> */}
                             {
                                 (board.slice(6).map((value, index) => <House key={index} houseIndex={index+6} mayTakeTurn={mayTakeTurn} notMyHouses={isAlice ? false : true} pieces={value}/>)).reverse()
                             }
-                            {/* </div> */}
                         </div>
                         <div className="row" ref={bobsHouses}>
-                            {/* <div ref={bobsHouses}> */}
                             {
                                 board.slice(0, 6).map((value, index) => <House key={index} houseIndex={index} mayTakeTurn={mayTakeTurn} notMyHouses={isAlice ? true : false} pieces={value}/>)
                             }
-                            {/* </div> */}
                         </div>
                     </Grid>
                     </Grid.Column>
-                    <Grid.Column width={2}>
-                        <Store points={points[1]}/>
+                    <Grid.Column className="center aligned" width={3}>
+                        <Store points={points[1]} name={"Bob"} color={"blue"}/>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

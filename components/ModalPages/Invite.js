@@ -18,9 +18,11 @@ export default function Invite() {
         <Modal.Content>
             <p>Send this invite to someone so that they can join the game.</p>
             <Form>
-                <TextArea value={inviteString} readOnly></TextArea>
+                <div className="ui labeled input" style={{width: '100%'}}>
+                    <Button className="ui label" onClick={copyInviteLink}>Copy Invite</Button>
+                    <TextArea value={inviteString} readOnly></TextArea>
+                </div>
             </Form>
-            <Button onClick={copyInviteLink}>Copy Invite</Button>
             <p>Once they join the game, a coin will flip to determine who goes first, then this window will close, and you can start the game.</p>
         </Modal.Content>
     </>)

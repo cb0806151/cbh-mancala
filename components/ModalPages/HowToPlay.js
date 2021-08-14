@@ -13,7 +13,8 @@ export default function HowToPlay() {
                 player disperses the pieces from a house in a counter-clockwise motion around the board; when they get to their store, they&apos;ll drop a piece in 
                 but they will ignore the other players store when they pass it. If a player drops the last piece they picked up into their store, they get an additional 
                 move; there is no limit to the amount of additonal moves you can get using this rule.<br/><br/>The game finishes when one side of the board is 
-                cleared of pieces; at that point, whichever player has more pieces in their store wins the game. Enjoy!
+                cleared of pieces; at that point, the remaining pieces are transfered to the store of the player whose side still had pieces. Whichever player then 
+                has more pieces in their store wins the game. Enjoy!
             </p>
         </Modal.Content>
         <Modal.Actions>
