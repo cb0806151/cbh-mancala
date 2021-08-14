@@ -151,8 +151,17 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 8/11/21
 - update how to play rules with extra turn logic
 
+8/13/21
+- clean up contract
+- test out connecting to the Conflux network 
+- get past issue with connecting to the Conflux network
+
+8/14/21
+- clean up contract
+- clean up test file
+- fix issue with betting
+
 Backlog
-- test out connecting to the Conflux network
 - record video
 
 </p>

@@ -163,11 +163,6 @@ const Alice = {
   getBet: Fun([], UInt),
 };
 
-const Bob = {
-  acceptBet: Fun([], Null),
-  relayState: Fun([State], Null),
-};
-
 /////////////////////////////////////////////////////////////////////////
 
 export const main = Reach.App(() => {
@@ -176,7 +171,7 @@ export const main = Reach.App(() => {
     verifyPerConnector: true 
   });
   const A = Participant('Alice', {...Players, ...Alice});
-  const B   = Participant('Bob', {...Players, ...Bob});
+  const B   = Participant('Bob', {...Players});
   deploy();
 
   const endOfGame = (resolution) => {
@@ -199,7 +194,6 @@ export const main = Reach.App(() => {
   commit();
 
   B.only(() => {
-    interact.acceptBet();
     const coinFlipB = declassify(interact.random());
   });
 
@@ -246,12 +240,10 @@ export const main = Reach.App(() => {
 
   transfer(winningsForAlice * initialBet).to(A);
   transfer(winningsForBob * initialBet).to(B);
+  commit();
 
   const gameResolution = winningsForAlice == 2 ? 1 : 
                          winningsForBob == 2 ? 2 : 0;
 
-  endOfGame(gameResolution)
-  commit();
-  exit();
-
+  endOfGame(gameResolution);
 });
