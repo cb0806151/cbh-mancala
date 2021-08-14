@@ -25,7 +25,7 @@ const initialState = (turnIndex) => ({
 
 /////////////////////////////////////////////////////////////////////////
 
-//////////////////////// Win Conditions /////////////////////////////////
+//////////////////////// Win Logic /////////////////////////////////
 
 const leftRowIsEmpty = (houses) => {
   return houses[0] == 0 && 
@@ -49,9 +49,20 @@ const rowsAreNotEmpty = (state) => {
   return (leftRowIsEmpty(state.board) == false && rightRowIsEmpty(state.board) == false)
 }
 
-const winnerIsAlice = (state) => state.points[0] > state.points[1];
+const winnerIsAlice = (points) => points[0] > points[1];
 
-const winnerIsBob = (state) => state.points[1] > state.points[0];
+const winnerIsBob = (points) => points[1] > points[0];
+
+const determineWinner = (state) => {
+  const indexOfLosingSide = leftRowIsEmpty(state.board) ? 1 : 0;
+  const leftoverPoints = Array.all(state.board, x => x < 49) ? state.board.sum() : 0
+  const updatedPointsForLosingSide = state.points[indexOfLosingSide] <= (UInt.max - leftoverPoints) ? state.points[indexOfLosingSide] + leftoverPoints : 0
+  const newPoints = state.points.set(indexOfLosingSide, updatedPointsForLosingSide);
+  const [ winningsForAlice, winningsForBob ] =  winnerIsAlice(newPoints) ? [2, 0] :
+                                                winnerIsBob(newPoints) ? [0, 2] :
+                                                [1,1]
+  return [ winningsForAlice, winningsForBob ]
+}
 
 /////////////////////////////////////////////////////////////////////////
 
@@ -233,10 +244,7 @@ export const main = Reach.App(() => {
     }
   }
 
-  const [ winningsForAlice, winningsForBob ] = 
-    winnerIsAlice(state) ? [2, 0] :
-    winnerIsBob(state) ? [0, 2] :
-    [1,1]
+  const [ winningsForAlice, winningsForBob ] = determineWinner(state)
 
   transfer(winningsForAlice * initialBet).to(A);
   transfer(winningsForBob * initialBet).to(B);

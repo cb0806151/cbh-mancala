@@ -160,6 +160,7 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 - clean up contract
 - clean up test file
 - fix issue with betting
+- add in win logic for emptying the board to the person whose side of the board still has pieces
 
 Backlog
 - record video
@@ -173,7 +174,6 @@ Backlog
 - Alternate rules: different common rulesets that can be chosen by the user who starts the game.
 - Make bets optional
 - Possibly change state management systems
-- add in win logic for emptying the board to the winner
 - Add in take-opposite-house rule
 - A clock that starts when another player takes their turn, if it runs all the way down the other player forfeits the game
 - change theme to dark mode
