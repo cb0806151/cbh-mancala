@@ -54,14 +54,19 @@ const winnerIsAlice = (points) => points[0] > points[1];
 const winnerIsBob = (points) => points[1] > points[0];
 
 const determineWinner = (state) => {
-  const indexOfLosingSide = leftRowIsEmpty(state.board) ? 1 : 0;
+  const indexOfLosingSide = leftRowIsEmpty(state.board) ? 0 : 1;
   const leftoverPoints = Array.all(state.board, x => x < 49) ? state.board.sum() : 0
   const updatedPointsForLosingSide = state.points[indexOfLosingSide] <= (UInt.max - leftoverPoints) ? state.points[indexOfLosingSide] + leftoverPoints : 0
   const newPoints = state.points.set(indexOfLosingSide, updatedPointsForLosingSide);
   const [ winningsForAlice, winningsForBob ] =  winnerIsAlice(newPoints) ? [2, 0] :
                                                 winnerIsBob(newPoints) ? [0, 2] :
                                                 [1,1]
-  return [ winningsForAlice, winningsForBob ]
+  const finalState = {
+    currentTurnIndex: state.currentTurnIndex,
+    board: array(UInt, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+    points: newPoints
+  }
+  return [ winningsForAlice, winningsForBob, finalState ]
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -166,7 +171,7 @@ const validateBet = (interact) => {
 
 const Players = {
   ...hasRandom,
-  gameEnds: Fun([UInt], Null),
+  gameEnds: Fun([UInt, State], Null),
   getMove: Fun([State], UInt),
 };
 
@@ -184,12 +189,6 @@ export const main = Reach.App(() => {
   const A = Participant('Alice', {...Players, ...Alice});
   const B   = Participant('Bob', {...Players});
   deploy();
-
-  const endOfGame = (resolution) => {
-    each([A, B], () => {
-        interact.gameEnds(resolution)
-    });
-  };
   
   A.only(() => {
     const initialBet = validateBet(interact);
@@ -244,7 +243,7 @@ export const main = Reach.App(() => {
     }
   }
 
-  const [ winningsForAlice, winningsForBob ] = determineWinner(state)
+  const [ winningsForAlice, winningsForBob, finalState ] = determineWinner(state)
 
   transfer(winningsForAlice * initialBet).to(A);
   transfer(winningsForBob * initialBet).to(B);
@@ -253,5 +252,7 @@ export const main = Reach.App(() => {
   const gameResolution = winningsForAlice == 2 ? 1 : 
                          winningsForBob == 2 ? 2 : 0;
 
-  endOfGame(gameResolution);
+  each([A, B], () => {
+    interact.gameEnds(gameResolution, finalState)
+  });
 });

@@ -161,6 +161,7 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 - clean up test file
 - fix issue with betting
 - add in win logic for emptying the board to the person whose side of the board still has pieces
+- update gameEnds function to send back a final copy of the state
 
 Backlog
 - record video
@@ -214,6 +215,7 @@ Notes:
     - the rule: once one player empties their side of the board, the game finishes and all the remaining pieces on the opposite side are transferred to the other players store.
     - this probably wouldn't be terribly difficult to implement and could be simplified to one function run right before the game finishes that creates a new state with a new board where all the remaining pieces are added to the corresponding players store. That new state is then used to determine who wins. 
     - update: not easy (I think), the amount of math needed to sum all the slots on one side of the board requires a boatload of verification
+    - update2: I was wrong, there is a built in array sum function that is fairly easy to verify.
 
 - frontend architecture stuff
     - create the components for the basic board
