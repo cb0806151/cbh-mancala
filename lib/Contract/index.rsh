@@ -123,24 +123,32 @@ const calculateFinalState = (piecesInOppositeHouse, piecesInLastHouseVisited, up
   }
 }
 
-const checkHouseTakenRule = (points, updatedBoard, startIndex, updatedPiecesCount, currentTurnIndex) => {
+const checkHouseTakenRule = (points, updatedBoard, startIndex, piecesCount, turnaroundPoint, currentTurnIndex) => {
 
-  const lastHouseVisited = startIndex <= (UInt.max - updatedPiecesCount) ? (startIndex + updatedPiecesCount) % 12 : 0;
-  const piecesInLastHouseVisited = updatedBoard[lastHouseVisited]
-  const lastHouseVisitedBelongsToAlice = lastHouseVisited > 5;
-  const houseOppositeTheOneVisited = lastHouseVisitedBelongsToAlice ? (11 - lastHouseVisited) : ((((5 - lastHouseVisited) * 2) + 1) + lastHouseVisited)
-  const piecesInOppositeHouse = updatedBoard[houseOppositeTheOneVisited]
-  const canTakeOppositeHouse = (currentTurnIndex == 0 && lastHouseVisitedBelongsToAlice) || (currentTurnIndex == 1 && !lastHouseVisitedBelongsToAlice)
-
-  if (canTakeOppositeHouse) {
-    return calculateFinalState(piecesInOppositeHouse, piecesInLastHouseVisited, updatedBoard, houseOppositeTheOneVisited, points, lastHouseVisited, currentTurnIndex)
-  } else {
+  const lastHouseVisited = startIndex <= (UInt.max - piecesCount) ? (startIndex + piecesCount) % 13 : 0;
+  if (lastHouseVisited == turnaroundPoint) {
     return {
       currentTurnIndex: currentTurnIndex,
       board: updatedBoard,
       points: points
     }
-  } 
+  } else {
+    const piecesInLastHouseVisited = lastHouseVisited < 12 ? updatedBoard[lastHouseVisited] : 0
+    const lastHouseVisitedBelongsToAlice = lastHouseVisited > 5;
+    const houseOppositeTheOneVisited = lastHouseVisitedBelongsToAlice ? (11 - lastHouseVisited) : ((((5 - lastHouseVisited) * 2) + 1) + lastHouseVisited)
+    const piecesInOppositeHouse = updatedBoard[houseOppositeTheOneVisited]
+    const canTakeOppositeHouse = (currentTurnIndex == 0 && lastHouseVisitedBelongsToAlice) || (currentTurnIndex == 1 && !lastHouseVisitedBelongsToAlice)
+  
+    if (canTakeOppositeHouse) {
+      return calculateFinalState(piecesInOppositeHouse, piecesInLastHouseVisited, updatedBoard, houseOppositeTheOneVisited, points, lastHouseVisited, currentTurnIndex)
+    } else {
+      return {
+        currentTurnIndex: currentTurnIndex,
+        board: updatedBoard,
+        points: points
+      }
+    } 
+  }
 }
 
 // Moves the pieces contained at a house with houseIndex around the board, thereby completing one turn
@@ -160,7 +168,7 @@ const movePieces = (state, houseIndex) => {
   const verifiedPoints = (state.points[playersStoreIndex] >= 0 && state.points[playersStoreIndex] <= UInt.max - points) ? state.points[playersStoreIndex] + points : state.points[playersStoreIndex];
   const updatedPoints = state.points.set(playersStoreIndex, verifiedPoints);
   const nextTurnIndex = calculateNextTurnIndex(houseIndex, piecesCount, turnaroundPoint, playersStoreIndex)
-  const finalState = checkHouseTakenRule(updatedPoints, updatedBoard, houseIndex, updatedPiecesCount, playersStoreIndex)
+  const finalState = checkHouseTakenRule(updatedPoints, updatedBoard, houseIndex, piecesCount, turnaroundPoint, playersStoreIndex)
   const updatedState = { 
     currentTurnIndex: nextTurnIndex,
     board: finalState.board,

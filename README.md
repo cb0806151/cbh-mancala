@@ -166,6 +166,7 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 - fix board width, button color, and button text
 - record video
 - Add in take-opposite-house rule
+- fix error with take-opposite-house rule
 
 Backlog
 - start work on article
