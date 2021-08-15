@@ -168,6 +168,12 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 - Add in take-opposite-house rule
 - fix error with take-opposite-house rule
 
+## State of application at end of competition (work done after the 14th is not included in the competition version of the application)
+
+8/15/21
+- have the frontend show the take-opposite-house rule taking effect before the contract verifies it
+- test using the Conflux Portal
+
 Backlog
 - start work on article
 
