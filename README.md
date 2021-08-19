@@ -173,9 +173,13 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 8/15/21
 - have the frontend show the take-opposite-house rule taking effect before the contract verifies it
 - test using the Conflux Portal
+- start work on article
+
+8/18/21
+- start work on contract v2 (which will not use ternary verification)
 
 Backlog
-- start work on article
+- fix issues with contract v2
 
 </p>
 </details>
@@ -216,6 +220,13 @@ Notes:
 - start setting up the frontend even though it isn't functional yet
 - completing one game as a test took roughly half an hour 
 - how do I check if the player dropped the last piece in the store?
+
+
+- rewriting the contract from the ground up
+    - instead of splitting apart the board and the points just have one 14 inlet board
+    - when it passes over one of the end areas it decides whether to drop a point in it or not based on the currentTurnIndex
+
+    
 
 - what would it take to implement the take opposite house rule:
     - the rule: the take opposite house rule is where the last piece placed in a house, if that house is empty and the house on the opposite side of the board has pieces, is placed directly into the players store along with the pieces from the opposite house

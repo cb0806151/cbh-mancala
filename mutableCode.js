@@ -1,4 +1,53 @@
 
+
+const movePieces = (board, houseIndex, nextTurnIndex) => {
+  const enemyStoreIndex = nextTurnIndex == 0 ? 13 : 0;
+  const nextHouseIndex = nextTurnIndex == 0 ? houseIndex + 1 : houseIndex;
+  
+  const updatedBoard = board.map((value, index) => {
+    
+    const spacesFromMovedHouse = (index < nextHouseIndex ? (13 - nextHouseIndex) + index : index - nextHouseIndex)
+    const pieces = board[nextHouseIndex];
+    
+    if (index == nextHouseIndex) {
+      return 0
+    } else if ( (index == enemyStoreIndex) || (pieces < spacesFromMovedHouse) ) {
+      return value
+    } else {
+      return value + Math.floor((pieces - spacesFromMovedHouse) / 12) + 1;
+    }
+  });
+  console.log(nextHouseIndex, updatedBoard)
+  printBoard(board)
+  return updatedBoard
+}
+
+const printBoard = (theBoard) => {
+  var boardString = ""
+  for (i = 0; i < 14; i++) {
+    boardString = boardString + ` ${theBoard[i]} `;
+    if (i == 6) boardString = boardString + `\n`;
+  }
+
+  console.log(boardString)
+}
+
+for (i = 0; i < 14; i++) {
+  if (i == 0 || i == 13) continue
+  board = movePieces(board, i, 1);
+  
+}
+
+
+
+
+
+
+
+
+
+
+
 // actualDistance gets the amount of pieces needed to get from the startIndex to the endIndex
 const actualDistance = houseCount == 13 ? 
 (endIndex < startIndex ? (houseCount - startIndex) + endIndex : endIndex - startIndex) :

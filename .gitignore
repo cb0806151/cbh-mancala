@@ -6,6 +6,12 @@ lib/Contract/docker-compose.yml.devnet
 lib/Contract/.dockerignore
 lib/Contract/.gitignore
 
+lib/ContractV2/reach
+lib/ContractV2/docker-compose.yml.devnet
+lib/ContractV2/.dockerignore
+lib/ContractV2/.gitignore
+lib/ContractV2/build
+
 # dependencies
 /node_modules
 /.pnp
