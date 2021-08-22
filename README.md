@@ -180,9 +180,11 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 
 8/22/21
 - prepare contract for review
+- clean up contract
 
 Backlog
 - fix issues with contract v2
+- attempt pre-verification of spacesFromMovedHouse and newPieces logic
 
 </p>
 </details>

@@ -37,7 +37,8 @@ const getPiecesCount = (board, nextHouseIndex, enemyStoreIndex) => {
   // since the circling of the board is ignoring the enemies store, an offset needs 
   // to be added to the number of pieces to compensate for that ignored move
   const offset = (pieces >= spacesFromMovedHouse) ? (((pieces - spacesFromMovedHouse) / 12) + 1) : 0
-  const updatedPieces = pieces + offset < 49 ? pieces + offset : pieces
+  // const updatedPieces = pieces + offset < 49 ? pieces + offset : pieces
+  const updatedPieces = pieces + offset
   return updatedPieces
 }
 
@@ -123,6 +124,11 @@ export const main = Reach.App(() => {
   const A = Participant('Alice', {...Players, ...Alice});
   const B   = Participant('Bob', {...Players});
   deploy();
+
+  const validateLoop = (initialBet, board) => {
+    return balance() == 2 * initialBet 
+    && Array.all(board, x => x < 49)
+  }
   
   A.only(() => {
     const initialBet = validateBet(interact);
@@ -154,7 +160,7 @@ export const main = Reach.App(() => {
   const participantIndex = (((coinFlipA % 2) + (coinFlipB % 2)) % 2) == 0 ? 0 : 1;
 
   var [currentTurnIndex, board, houseIndex] = [participantIndex, defaultBoard, 0];
-  invariant( balance() == 2 * initialBet && Array.all(board, x => x < 49) )
+  invariant( validateLoop(initialBet, board) )
   while ( rowsAreNotEmpty(board) ) {
 
     if (currentTurnIndex == 0) {
