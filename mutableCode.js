@@ -1,48 +1,64 @@
-
-
-const movePieces = (board, houseIndex, nextTurnIndex) => {
-  const enemyStoreIndex = nextTurnIndex == 0 ? 13 : 0;
-  const nextHouseIndex = nextTurnIndex == 0 ? houseIndex + 1 : houseIndex;
-  
-  const updatedBoard = board.map((value, index) => {
-    
-    const spacesFromMovedHouse = (index < nextHouseIndex ? (13 - nextHouseIndex) + index : index - nextHouseIndex)
-    const pieces = board[nextHouseIndex];
-    
-    if (index == nextHouseIndex) {
-      return 0
-    } else if ( (index == enemyStoreIndex) || (pieces < spacesFromMovedHouse) ) {
-      return value
-    } else {
-      return value + Math.floor((pieces - spacesFromMovedHouse) / 12) + 1;
-    }
-  });
-  console.log(nextHouseIndex, updatedBoard)
-  printBoard(board)
-  return updatedBoard
-}
-
 const printBoard = (theBoard) => {
-  var boardString = ""
-  for (i = 0; i < 14; i++) {
-    boardString = boardString + ` ${theBoard[i]} `;
-    if (i == 6) boardString = boardString + `\n`;
+  var boardString = ``
+  for (j = 0; j < 14; j++) {
+    boardString = boardString + ` ${theBoard[j]} `;
+    if (j == 6) boardString = boardString + `\n`;
   }
 
   console.log(boardString)
 }
 
-for (i = 0; i < 14; i++) {
-  if (i == 0 || i == 13) continue
-  board = movePieces(board, i, 1);
+const getPieceCount = (board, nextHouseIndex, enemyStoreIndex) => {
+  const spacesFromMovedHouse = (enemyStoreIndex < nextHouseIndex ? (14 - nextHouseIndex) + enemyStoreIndex : enemyStoreIndex - nextHouseIndex)
+  const pieces = board[nextHouseIndex];
+  const offset = (pieces >= spacesFromMovedHouse) ? Math.floor((pieces - spacesFromMovedHouse) / 12) + 1 : 0
+  const updatedPieces = pieces + offset
+  console.log(spacesFromMovedHouse + " " + pieces + " " + offset)
+  return updatedPieces
+}
+
+const movePieces = (board, nextHouseIndex, nextTurnIndex) => {
+  const isAlice = nextTurnIndex == 0
+  const enemyStoreIndex = isAlice ? 6 : 13;
+  const pieces = getPieceCount(board, nextHouseIndex, enemyStoreIndex)
+  board[nextHouseIndex] = 0
+  console.log(pieces)
   
+  const updatedBoard = board.map((value, index) => {
+    
+    const spacesFromMovedHouse = (index <= nextHouseIndex ? (14 - nextHouseIndex) + index : index - nextHouseIndex)
+    
+    
+    if ( (index == enemyStoreIndex) || (pieces < spacesFromMovedHouse) ) {
+      return value
+    } else {
+      return value + Math.floor((pieces - spacesFromMovedHouse) / 14) + 1;
+    }
+  });
+  console.log(nextHouseIndex + " " + updatedBoard)
+//   printBoard(board)
+  return updatedBoard
 }
 
 
 
+for (i = 6; i < 14; i++) {
+  if (i == 6 || i == 13) continue
+  board = movePieces(board, i, 0);
+  
+}
+// board = movePieces(board, 5, 1);
+// for (i = 7; i < 14; i++) {
+//   if (i == 6 || i == 13) continue
+//   board = movePieces(board, i, 0);
+  
+// }
 
-
-
+// for (i = 6; i < 14; i++) {
+//   if (i == 0 || i == 13) continue
+//   board = movePieces(board, i, 1);
+  
+// }
 
 
 

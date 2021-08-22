@@ -3,17 +3,17 @@
 // Constants
 
 const Board = Array(UInt, 14);
-const defaultBoard = array(UInt, [0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0]);
+const defaultBoard = array(UInt, [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0]);
 
 // Win Logic
 
 const leftRowIsEmpty = (board) => {
-  return board[1] == 0 && 
+  return board[0] == 0 && 
+         board[1] == 0 && 
          board[2] == 0 && 
          board[3] == 0 && 
          board[4] == 0 && 
-         board[5] == 0 && 
-         board[6] == 0
+         board[5] == 0 
 }
 
 const rightRowIsEmpty = (board) => {
@@ -31,42 +31,41 @@ const rowsAreNotEmpty = (board) => {
 
 // Game Logic
 
+const getPiecesCount = (board, nextHouseIndex, enemyStoreIndex) => {
+  const spacesFromMovedHouse = (enemyStoreIndex < nextHouseIndex ? (14 - nextHouseIndex) + enemyStoreIndex : enemyStoreIndex - nextHouseIndex)
+  const pieces = board[nextHouseIndex];
+  // since the circling of the board is ignoring the enemies store, an offset needs 
+  // to be added to the number of pieces to compensate for that ignored move
+  const offset = (pieces >= spacesFromMovedHouse) ? (((pieces - spacesFromMovedHouse) / 12) + 1) : 0
+  const updatedPieces = pieces + offset < 49 ? pieces + offset : pieces
+  return updatedPieces
+}
+
 const movePieces = (board, houseIndex, nextTurnIndex) => {
-
-  const isAlice = nextTurnIndex == 0
-  const enemyStoreIndex = isAlice ? 13 : 0;
+  const enemyStoreIndex = nextTurnIndex == 0 ? 6 : 13;
+  const pieces = getPiecesCount(board, houseIndex, enemyStoreIndex)
+  const cleanedBoard = board.set(houseIndex, 0)
   
-  // Depending on whose turn it is, an offset is added to the houseIndex to ensure 
-  // that the board only has 13 traversable inlets (since each side ignores their 
-  // opponents inlet when circling the board)
-  const nextHouseIndex = isAlice ? houseIndex + 1 : houseIndex;
-  
-  // Circles the board once, updating the number of pieces in each house 
+  // Iterates over the board, updating the number of pieces in each house 
   // as it visits them
-
-  const updatedBoard = board.mapWithIndex((value, index) => {
+  const updatedBoard = cleanedBoard.mapWithIndex((value, index) => {
     
     // Calculates the number of spaces (traveling forward around the board) it will 
     // take to get from the current house (index) to the house that the player 
-    // moved (nextHouseIndex)
-    const spacesFromMovedHouse = (index < nextHouseIndex ? (13 - nextHouseIndex) + index : index - nextHouseIndex)
-    const pieces = board[nextHouseIndex];
+    // moved (houseIndex)
+    const spacesFromMovedHouse = (index <= houseIndex ? (14 - houseIndex) + index : index - houseIndex)
     
-    // Empty the house that is being moved
-    if (index == nextHouseIndex) {
-      return 0
-
     // If this house is the enemies store then no pieces are added to it; 
-    // also, if the number of pieces from the moved house won't reach this house 
-    // then don't add any pieces to it
-    } else if ( (index == enemyStoreIndex) || (pieces < spacesFromMovedHouse) ) {
+    // also, if the number of pieces from the moved house (houseIndex) won't 
+    // reach this house then don't add any pieces to it
+    if ( (index == enemyStoreIndex) || (pieces < spacesFromMovedHouse) ) {
       return value
     } else {
 
       // If there are enough pieces to reach this house then add the 
       // new pieces to its original value
-      const newPieces = ((pieces - spacesFromMovedHouse) / 12) + 1;
-      const updatedPieceCount = newPieces + value;
+      const newPieces = ((pieces - spacesFromMovedHouse) / 14) + 1;
+      const updatedPieceCount = newPieces + value < 49 ? newPieces + value : value;
       return updatedPieceCount;
     }
   });
@@ -86,12 +85,12 @@ const validateBet = (interact) => {
 
 const verifyTurnIndex = (currentTurnIndex) => (currentTurnIndex == 0 || currentTurnIndex == 1);
 
-const houseIndexInsideBoard = (index) => (index >= 0 && index < 14 && index != 13 && index != 0);
+const houseIndexInsideBoard = (index) => (index >= 0 && index < 14 && index != 13 && index != 6);
 
 const houseAtIndexIsNotEmpty = (index, board) => board[index] > 0;
 
 const validateMove = (interact, currentTurnIndex, board) => {
-  const houseIndex = interact.getMove(board);
+  const houseIndex = interact.getMove(board, currentTurnIndex);
   assume(verifyTurnIndex(currentTurnIndex));
   assume(houseIndexInsideBoard(houseIndex));
   assume(houseAtIndexIsNotEmpty(houseIndex, board));
@@ -109,7 +108,7 @@ const verifyMove = (currentTurnIndex, board, houseIndex) => {
 const Players = {
   ...hasRandom,
   gameEnds: Fun([UInt, Board], Null),
-  getMove: Fun([Board], UInt),
+  getMove: Fun([Board, UInt], UInt),
 };
 
 const Alice = {
@@ -187,6 +186,10 @@ export const main = Reach.App(() => {
     }
 
   }
+
+  each([A, B], () => {
+    interact.gameEnds(0, board)
+  });
 
   transfer(initialBet).to(A);
   transfer(initialBet).to(B);

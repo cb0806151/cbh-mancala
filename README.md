@@ -178,6 +178,9 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 8/18/21
 - start work on contract v2 (which will not use ternary verification)
 
+8/22/21
+- prepare contract for review
+
 Backlog
 - fix issues with contract v2
 
