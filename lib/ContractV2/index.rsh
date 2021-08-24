@@ -42,6 +42,21 @@ const getPiecesCount = (board, nextHouseIndex, enemyStoreIndex) => {
   return updatedPieces
 }
 
+const calculateNextTurnIndex = (startIndex, currentTurnIndex, board) => {
+  const turnaroundPoint = currentTurnIndex == 0 ? 13 : 6;
+  const enemyStoreIndex = currentTurnIndex == 0 ? 6 : 13;
+  const piecesCount = getPiecesCount(board, startIndex, enemyStoreIndex)
+  // calculate the last house/store a pieces is dropped in
+  const lastHouseVisited = (startIndex + piecesCount) % 14;
+  // checks if the last house/store a piece is dropped in is the current players store. If so, it grants them 
+  // an extra turn; if not, the other player goes next
+  if (lastHouseVisited === turnaroundPoint) {
+    return currentTurnIndex
+  } else {
+    return currentTurnIndex == 1 ? 0 : 1;
+  }
+}
+
 const movePieces = (board, houseIndex, nextTurnIndex) => {
   const enemyStoreIndex = nextTurnIndex == 0 ? 6 : 13;
   const pieces = getPiecesCount(board, houseIndex, enemyStoreIndex)
@@ -167,7 +182,7 @@ export const main = Reach.App(() => {
       commit();
       A.only(() => {
         const nextHouseIndex = validateMove(interact, currentTurnIndex, board);
-        const nextTurnIndex = 1;
+        const nextTurnIndex = calculateNextTurnIndex(nextHouseIndex, currentTurnIndex, board);
       });
       A.publish(nextHouseIndex, nextTurnIndex);
 
@@ -180,7 +195,7 @@ export const main = Reach.App(() => {
       commit();
       B.only(() => {
         const nextHouseIndex = validateMove(interact, currentTurnIndex, board);
-        const nextTurnIndex = 0;
+        const nextTurnIndex = calculateNextTurnIndex(nextHouseIndex, currentTurnIndex, board);
       });
       B.publish(nextHouseIndex, nextTurnIndex);
 
