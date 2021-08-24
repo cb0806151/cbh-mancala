@@ -89,6 +89,35 @@ const movePieces = (board, houseIndex, nextTurnIndex) => {
   return updatedBoard
 }
 
+const updateBoardIfOppositeHouseTaken = (startIndex, currentTurnIndex, board) => {
+  const turnaroundPoint = currentTurnIndex == 0 ? 13 : 6;
+  const enemyStoreIndex = currentTurnIndex == 0 ? 6 : 13;
+  const piecesCount = getPiecesCount(board, startIndex, enemyStoreIndex)
+  // calculate the last house/store a piece is dropped in
+  const lastHouseVisited = (startIndex + piecesCount) % 14;
+
+  if (lastHouseVisited > 12 || lastHouseVisited == turnaroundPoint) {
+    return board
+  } else {
+    const piecesInLastHouseVisited = board[lastHouseVisited]
+    const lastHouseVisitedBelongsToAlice = lastHouseVisited > 6;
+    const houseOppositeTheOneVisited = lastHouseVisitedBelongsToAlice ? (12 - lastHouseVisited) : ((((6 - lastHouseVisited) * 2) + 1) + lastHouseVisited)
+    const piecesInOppositeHouse = board[houseOppositeTheOneVisited]
+    const lastHouseIsOnPlayersSideOfBoard = (currentTurnIndex == 0 && lastHouseVisitedBelongsToAlice) || (currentTurnIndex == 1 && !lastHouseVisitedBelongsToAlice)
+    const canTakeOppositeHouse = lastHouseIsOnPlayersSideOfBoard && piecesInOppositeHouse > 0 && piecesInLastHouseVisited == 1
+
+    if (canTakeOppositeHouse) {
+      const updatedPoints = (board[houseOppositeTheOneVisited] + board[turnaroundPoint] + 1) < 49 ? board[houseOppositeTheOneVisited] + board[turnaroundPoint] + 1 : piecesInLastHouseVisited
+      const boardWithoutOppositeHouse = board.set(houseOppositeTheOneVisited, 0);
+      const boardWithoutOriginalPiece = boardWithoutOppositeHouse.set(lastHouseVisited, 0);
+      const updatedBoard = boardWithoutOriginalPiece.set(turnaroundPoint, updatedPoints)
+      return updatedBoard
+    } else {
+      return board
+    }
+  }
+}
+
 // Validation Logic
 
 const betIsValid = (initialBet) => (initialBet >= 0 && initialBet < UInt.max && initialBet < (UInt.max - initialBet));
@@ -189,7 +218,8 @@ export const main = Reach.App(() => {
       verifyMove(currentTurnIndex, board, nextHouseIndex)
 
       const updatedBoard = movePieces(board, nextHouseIndex, nextTurnIndex);
-      [currentTurnIndex, board, houseIndex] = [nextTurnIndex, updatedBoard, nextHouseIndex]
+      const finalBoard = updateBoardIfOppositeHouseTaken(nextHouseIndex, currentTurnIndex, updatedBoard);
+      [currentTurnIndex, board, houseIndex] = [nextTurnIndex, finalBoard, nextHouseIndex]
       continue;
     } else {
       commit();
@@ -202,7 +232,8 @@ export const main = Reach.App(() => {
       verifyMove(currentTurnIndex, board, nextHouseIndex)
 
       const updatedBoard = movePieces(board, nextHouseIndex, nextTurnIndex);
-      [currentTurnIndex, board, houseIndex] = [nextTurnIndex, updatedBoard, nextHouseIndex]
+      const finalBoard = updateBoardIfOppositeHouseTaken(nextHouseIndex, currentTurnIndex, updatedBoard);
+      [currentTurnIndex, board, houseIndex] = [nextTurnIndex, finalBoard, nextHouseIndex]
       continue;
     }
 

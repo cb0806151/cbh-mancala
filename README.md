@@ -183,11 +183,12 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 - clean up contract
 
 8/23/21
-- add take-extra-turn rule
+- add take-extra-turn rule to contractv2
+- add take-opposite-house rule to contractv2
 
 Backlog
-- fix issues with contract v2
-- attempt pre-verification of spacesFromMovedHouse and newPieces logic
+- implement better verification in contract v2
+- add in win logic to contractv2
 
 </p>
 </details>
