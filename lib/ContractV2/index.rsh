@@ -29,9 +29,9 @@ const rowsAreNotEmpty = (board) => {
   return (leftRowIsEmpty(board) == false && rightRowIsEmpty(board) == false)
 }
 
-const winnerIsAlice = (points) => points[6] > points[13];
+const winnerIsAlice = (points) => points[13] > points[6];
 
-const winnerIsBob = (points) => points[13] > points[6];
+const winnerIsBob = (points) => points[6] > points[13];
 
 const determineWinner = (board) => {
   const indexOfLosingSide = leftRowIsEmpty(board) ? 6 : 13;
@@ -73,8 +73,8 @@ const calculateNextTurnIndex = (startIndex, currentTurnIndex, board) => {
   }
 }
 
-const movePieces = (board, houseIndex, nextTurnIndex) => {
-  const enemyStoreIndex = nextTurnIndex == 0 ? 6 : 13;
+const movePieces = (board, houseIndex, currentTurnIndex) => {
+  const enemyStoreIndex = currentTurnIndex == 0 ? 6 : 13;
   const pieces = getPiecesCount(board, houseIndex, enemyStoreIndex)
   const cleanedBoard = board.set(houseIndex, 0)
   
@@ -233,7 +233,7 @@ export const main = Reach.App(() => {
 
       verifyMove(currentTurnIndex, board, nextHouseIndex)
 
-      const updatedBoard = movePieces(board, nextHouseIndex, nextTurnIndex);
+      const updatedBoard = movePieces(board, nextHouseIndex, currentTurnIndex);
       const finalBoard = updateBoardIfOppositeHouseTaken(nextHouseIndex, currentTurnIndex, updatedBoard);
       [currentTurnIndex, board, houseIndex] = [nextTurnIndex, finalBoard, nextHouseIndex]
       continue;
@@ -247,7 +247,7 @@ export const main = Reach.App(() => {
 
       verifyMove(currentTurnIndex, board, nextHouseIndex)
 
-      const updatedBoard = movePieces(board, nextHouseIndex, nextTurnIndex);
+      const updatedBoard = movePieces(board, nextHouseIndex, currentTurnIndex);
       const finalBoard = updateBoardIfOppositeHouseTaken(nextHouseIndex, currentTurnIndex, updatedBoard);
       [currentTurnIndex, board, houseIndex] = [nextTurnIndex, finalBoard, nextHouseIndex]
       continue;
