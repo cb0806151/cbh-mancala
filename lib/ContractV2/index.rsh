@@ -29,9 +29,9 @@ const rowsAreNotEmpty = (board) => {
   return (leftRowIsEmpty(board) == false && rightRowIsEmpty(board) == false)
 }
 
-const winnerIsAlice = (points) => points[0] > points[1];
+const winnerIsAlice = (points) => points[6] > points[13];
 
-const winnerIsBob = (points) => points[1] > points[0];
+const winnerIsBob = (points) => points[13] > points[6];
 
 const determineWinner = (board) => {
   const indexOfLosingSide = leftRowIsEmpty(board) ? 6 : 13;
