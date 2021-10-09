@@ -29,6 +29,22 @@ const rowsAreNotEmpty = (board) => {
   return (leftRowIsEmpty(board) == false && rightRowIsEmpty(board) == false)
 }
 
+const winnerIsAlice = (points) => points[0] > points[1];
+
+const winnerIsBob = (points) => points[1] > points[0];
+
+const determineWinner = (board) => {
+  const indexOfLosingSide = leftRowIsEmpty(board) ? 6 : 13;
+  const leftoverPoints = board.sum()
+  const updatedPointsForLosingSide = board[indexOfLosingSide] + leftoverPoints
+  const newPoints = board.set(indexOfLosingSide, updatedPointsForLosingSide);
+  const [ winningsForAlice, winningsForBob ] =  winnerIsAlice(newPoints) ? [2, 0] :
+                                                winnerIsBob(newPoints) ? [0, 2] :
+                                                [1,1]
+
+  return [ winningsForAlice, winningsForBob, newPoints ]
+}
+
 // Game Logic
 
 const getPiecesCount = (board, nextHouseIndex, enemyStoreIndex) => {
@@ -239,12 +255,17 @@ export const main = Reach.App(() => {
 
   }
 
-  each([A, B], () => {
-    interact.gameEnds(0, board)
-  });
+  const [ winningsForAlice, winningsForBob, finalBoard ] = determineWinner(board)
 
-  transfer(initialBet).to(A);
-  transfer(initialBet).to(B);
+  transfer(winningsForAlice * initialBet).to(A);
+  transfer(winningsForBob * initialBet).to(B);
   commit();
+
+  const gameResolution = winningsForAlice == 2 ? 1 : 
+                         winningsForBob == 2 ? 2 : 0;
+
+  each([A, B], () => {
+    interact.gameEnds(gameResolution, finalBoard)
+  });
 
 });
