@@ -34,7 +34,7 @@ const winnerIsAlice = (points) => points[13] > points[6];
 const winnerIsBob = (points) => points[6] > points[13];
 
 const determineWinner = (board) => {
-  const indexOfLosingSide = leftRowIsEmpty(board) ? 6 : 13;
+  const indexOfLosingSide = leftRowIsEmpty(board) ? 13 : 6;
   const leftoverPoints = board.sum()
   const updatedPointsForLosingSide = board[indexOfLosingSide] + leftoverPoints
   const newPoints = board.set(indexOfLosingSide, updatedPointsForLosingSide);

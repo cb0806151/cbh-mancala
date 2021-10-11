@@ -191,6 +191,11 @@ Creating the game of Mancala on Conflux as part of the Conflux/Reach Bounty Hack
 - update frontend logic to work with contractv2
 - fix takeOppositeHouse rule with contractv2
 
+10/10/21
+- point dapp at mainnet
+- update game ending to work with contractv2
+- implement loading state when contract is deploying
+
 Backlog
 - implement better verification in contract v2
 - add in and test timeouts

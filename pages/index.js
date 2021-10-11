@@ -27,7 +27,7 @@ export default function Home() {
 
   const connectWallet = async () => {
     await getAccount()
-    await fundAccount()
+    // await fundAccount() for use on testnet and devnet only
     await getBalance()
   }
 
